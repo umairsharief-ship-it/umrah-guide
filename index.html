@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Umrah Guide">
+<meta name="theme-color" content="#1F5C5C">
+<title>Sabrina's Umrah Guide</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #FAF8F4; color: #18282A; }
+  #app { max-width: 460px; margin: 0 auto; min-height: 100vh; padding-bottom: 40px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(160deg, #1F5C5C 0%, #163F3F 100%);
+    padding: 22px 18px 18px; color: #fff;
+    position: sticky; top: 0; z-index: 20;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  .header-label { margin: 0 0 1px; font-size: 11px; opacity: 0.6; letter-spacing: 2.5px; text-transform: uppercase; }
+  .header-title { margin: 0 0 14px; font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+
+  /* Progress */
+  .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .progress-track { flex: 1; height: 6px; background: rgba(255,255,255,0.18); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #B8943A, #E8C060); border-radius: 99px; transition: width 0.5s ease; }
+  .progress-label { font-size: 12px; opacity: 0.85; white-space: nowrap; font-weight: 600; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0; padding: 7px 14px; border-radius: 99px;
+    font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px;
+    transition: all 0.2s; border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1); color: #fff; font-weight: 500;
+  }
+  .tab.active { background: #fff; color: #1F5C5C; font-weight: 700; border: none; }
+
+  /* Section heading */
+  .section-heading { padding: 20px 18px 4px; }
+  .section-heading-row { display: flex; align-items: baseline; justify-content: space-between; }
+  .section-title { margin: 0 0 2px; font-size: 20px; font-weight: 800; color: #18282A; }
+  .section-sub { margin: 0; font-size: 13px; color: #5A7070; }
+  .section-count { font-size: 13px; color: #5A7070; font-weight: 600; }
+  .divider { height: 1px; background: #E2DAD0; margin-top: 14px; }
+
+  /* Steps */
+  .steps { padding: 4px 18px 32px; }
+  .step { padding: 18px 0; border-bottom: 1px solid #E2DAD0; display: flex; gap: 14px; align-items: flex-start; }
+  .step.done { opacity: 0.4; }
+
+  /* Circle */
+  .circle {
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px; cursor: pointer; transition: all 0.2s;
+    border: 2px solid #C8C0B8; background: #fff; font-size: 12px; font-weight: 700; color: #6A7A7B;
+  }
+  .circle.checked { background: #1F5C5C; border-color: #1F5C5C; box-shadow: 0 0 0 4px #D4E8E8; color: #fff; font-size: 16px; }
+  .circle.counter-circle { background: #C8E8DF; border: none; font-size: 15px; cursor: default; }
+  .circle.counter-done { background: #1F5C5C; color: #fff; font-size: 15px; font-weight: 700; }
+
+  /* Content */
+  .step-content { flex: 1; }
+  .step-text { margin: 0; font-size: 16px; line-height: 1.75; color: #18282A; white-space: pre-line; font-weight: 400; }
+
+  /* Note */
+  .note { margin-top: 10px; padding: 10px 13px; background: #EEE9E0; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start; }
+  .note p { margin: 0; font-size: 14px; color: #2A3A3B; line-height: 1.6; font-weight: 400; }
+
+  /* Dua box */
+  .dua-box { background: #FDF6E3; border: 1px solid #D4AA50; border-radius: 12px; padding: 16px; margin-top: 14px; }
+  .dua-arabic { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; line-height: 2.1; text-align: right; direction: rtl; color: #18282A; margin: 0 0 12px; }
+  .dua-roman { font-size: 14px; font-style: italic; color: #4A3200; margin: 0 0 8px; line-height: 1.65; font-weight: 400; }
+  .dua-meaning { font-size: 14px; color: #2A1E00; margin: 0; line-height: 1.65; font-weight: 500; }
+
+  /* Counter */
+  .counter { background: #fff; border: 2px solid #1F5C5C; border-radius: 16px; padding: 18px 16px; margin: 16px 0; }
+  .counter.done { border-color: #2E7D52; }
+  .counter-label { margin: 0 0 4px; font-size: 14px; color: #3A5050; text-align: center; font-weight: 600; }
+  .counter-number { margin: 0 0 14px; font-size: 60px; font-weight: 800; color: #1F5C5C; line-height: 1; text-align: center; }
+  .counter-number.done { color: #2E7D52; }
+  .counter-number span { font-size: 26px; font-weight: 400; color: #A0B0B0; }
+  .counter-dots { display: flex; justify-content: center; gap: 7px; margin-bottom: 16px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: #D0C8C0; transition: background 0.25s; }
+  .dot.filled { background: #1F5C5C; }
+  .dot.filled.done { background: #2E7D52; }
+  .counter-btns { display: flex; gap: 10px; }
+  .btn-minus {
+    width: 56px; height: 56px; border-radius: 12px;
+    border: 2px solid #C8C0B8; background: #F8F5F0; color: #3A4A4B;
+    font-size: 26px; cursor: pointer; flex-shrink: 0; font-weight: 400;
+  }
+  .btn-minus:disabled { opacity: 0.25; cursor: not-allowed; }
+  .btn-add {
+    flex: 1; height: 56px; border-radius: 12px; border: none;
+    background: #1F5C5C; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .btn-add.done { background: #2E7D52; cursor: default; }
+  .counter-alhamdulillah { text-align: center; color: #2E7D52; font-weight: 700; font-size: 18px; margin: 12px 0 0; font-family: Georgia, serif; }
+
+  /* Learn more */
+  .learn-more { margin-top: 14px; }
+  .learn-toggle { background: none; border: none; padding: 0; cursor: pointer; font-size: 14px; color: #1A4A4A; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+  .learn-body { margin-top: 10px; padding: 13px 15px; background: #E0EEEE; border-radius: 10px; border-left: 3px solid #1F5C5C; display: none; }
+  .learn-body.open { display: block; }
+  .learn-history { margin: 0 0 8px; font-size: 14px; color: #0E2828; line-height: 1.65; font-weight: 400; }
+  .learn-tip { display: flex; gap: 8px; margin-bottom: 8px; }
+  .learn-tip-dot { color: #8A6A00; flex-shrink: 0; margin-top: 2px; font-size: 16px; font-weight: 700; }
+  .learn-tip p { margin: 0; font-size: 14px; color: #0E2828; line-height: 1.65; font-weight: 400; }
+
+  /* Mark done button */
+  .mark-btn {
+    margin-top: 14px; padding: 10px 20px; border-radius: 99px;
+    border: 2px solid #1F5C5C; background: #1F5C5C;
+    color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mark-btn.done { background: #fff; color: #5A7070; border-color: #B0C0C0; }
+
+  /* Next button */
+  .next-btn {
+    width: 100%; margin-top: 24px; padding: 16px;
+    border-radius: 14px; border: 2px solid #1F5C5C;
+    background: #EAF4F4; color: #1A4040;
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.25s;
+  }
+  .next-btn.ready { background: #1F5C5C; color: #fff; border-color: #1F5C5C; }
+
+  /* Completion card */
+  .completion-card {
+    margin-top: 24px;
+    background: linear-gradient(135deg, #1F5C5C, #0F3030);
+    border-radius: 18px; padding: 28px 22px;
+    text-align: center; color: #fff;
+    box-shadow: 0 8px 32px rgba(31,92,92,0.35);
+    display: none;
+  }
+  .completion-card.show { display: block; }
+  .completion-arabic { font-family: Georgia, serif; font-size: 30px; margin: 0 0 10px; line-height: 1.6; }
+  .completion-roman { margin: 0 0 6px; font-size: 16px; opacity: 0.95; font-style: italic; }
+  .completion-msg { margin: 0; font-size: 14px; opacity: 0.85; }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Header -->
+  <div class="header">
+    <p class="header-label">Step-by-step guide</p>
+    <h1 class="header-title">Sabrina's Umrah 🤍</h1>
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <span class="progress-label" id="progress-label">0% complete</span>
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </div>
+
+  <!-- Section heading -->
+  <div class="section-heading">
+    <div class="section-heading-row">
+      <div>
+        <h2 class="section-title" id="section-title"></h2>
+        <p class="section-sub" id="section-sub"></p>
+      </div>
+      <span class="section-count" id="section-count"></span>
+    </div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Steps container -->
+  <div class="steps" id="steps"></div>
+</div>
+
+<script>
+const C = {
+  teal: '#1F5C5C', tealFaint: '#EAF4F4',
+  gold: '#B8943A', goldFaint: '#FDF8EE', goldBorder: '#E0C97A',
+  cream: '#FAF8F4', dark: '#18282A', mid: '#4A5F60',
+  muted: '#8A9FA0', border: '#E2DAD0', white: '#FFFFFF', green: '#2E7D52'
+};
+
+const SECTIONS = [
+  { key:'ihram',      label:'Ihram',  emoji:'🌿', sub:'Before the Miqat' },
+  { key:'tawaf',      label:'Tawaf',  emoji:'🕋', sub:'7 circuits'       },
+  { key:'saee',       label:"Sa'ee",  emoji:'🏃‍♀️', sub:'7 laps'           },
+  { key:'completion', label:'Done',   emoji:'✂️', sub:'Final step'       },
+];
+
+const STEPS = [
+  { id:'i1', section:'ihram',
+    text:'Take a full bath (ghusl) with the intention of Ihram.',
+    note:'If unable, wudu is sufficient.',
+    detail:{ tips:['Trim nails and remove unwanted hair now — not allowed once in Ihram.','Apply perfume before Ihram only — not after.'] }
+  },
+  { id:'i2', section:'ihram',
+    text:"Dress modestly. Your regular abaya and hijab are your Ihram — no special garment for women.",
+    note:'Cover everything except face and hands. Do not cover your face with a niqab while in Ihram.',
+    detail:{ tips:['Do not cut or trim hair or nails while in Ihram.','Do not apply perfume or scented products.','Do not cover your face, even in a crowd.','Avoid intimacy with your husband.','All restrictions lift once you trim your hair at the end.'] }
+  },
+  { id:'i3', section:'ihram',
+    text:"Pray 2 rak'ahs with the intention of Ihram, if it is not a disliked time.",
+    note:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd."
+  },
+  { id:'i4', section:'ihram',
+    text:'At the Miqat — or just before the plane crosses it — make your intention for Umrah:',
+    dua:{ arabic:'لَبَّيْكَ اللّٰهُمَّ عُمْرَةً', roman:"Labbayk Allāhumma 'umratan", meaning:'Here I am, O Allah, for Umrah.' },
+    detail:{ tips:['The Miqat are fixed boundaries set by the Prophet ﷺ. No one intending Umrah may cross without entering Ihram.','If flying, the airline or group leader will announce when you are approaching the Miqat.'] }
+  },
+  { id:'i5', section:'ihram',
+    text:'Begin reciting the Talbiyah quietly. Keep repeating it until Tawaf begins.',
+    dua:{ arabic:'لَبَّيْكَ اللّٰهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ', roman:'Labbayk Allāhumma labbayk. Labbayk lā sharīka laka labbayk. Innal-ḥamda wan-niʿmata laka wal-mulk. Lā sharīka lak.', meaning:'Here I am, O Allah, here I am. You have no partner. All praise, grace, and sovereignty belong to You. You have no partner.' },
+    detail:{ history:"The Talbiyah is the pilgrim's call. You are answering Allah's invitation, just as Ibrahim (AS) once called all of humanity to this House and they answered across time." }
+  },
+  { id:'t1', section:'tawaf',
+    text:'Make sure you have wudu. Enter Masjid Al-Haram with your right foot and say:',
+    dua:{ arabic:'اللّٰهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ', roman:'Allāhummaf-taḥ lī abwāba raḥmatik', meaning:'O Allah, open for me the gates of Your mercy.' }
+  },
+  { id:'t2', section:'tawaf',
+    text:"When the Ka'bah comes into view for the first time — stop. Raise your hands and make dua. This is one of the most powerful moments of the entire Umrah.",
+    note:"No fixed dua here. Scholars say dua is accepted at first sight of the Ka'bah. Speak freely — for yourself, your husband, your children, your parents. Take your time.",
+    detail:{ history:"This is the House of Allah — the direction every Muslim on earth faces five times a day. Seeing it for the first time is a gift very few people receive. Before anything else, ask." }
+  },
+  { id:'t3', section:'tawaf',
+    text:"Walk to the Black Stone corner (Hajar Al-Aswad). Make your niyyah in your heart: 'I intend to perform Tawaf of the Ka'bah for Umrah.'",
+    note:'The Black Stone is set into the Ka\'bah at shoulder height, usually marked by a green light on the wall above.',
+    detail:{ history:'The Black Stone marks where each circuit begins and ends. The Prophet ﷺ kissed it. It is not worshipped — it is a marker and a physical connection to the time of Ibrahim (AS).' }
+  },
+  { id:'t4', section:'tawaf',
+    text:'Stop reciting the Talbiyah now. Face the Black Stone, point toward it with your right hand, and say the dua to begin circuit 1.',
+    dua:{ arabic:'بِسْمِ اللّٰهِ، اللّٰهُ أَكْبَرُ', roman:'Bismillāhi Allāhu Akbar', meaning:'In the name of Allah, Allah is the Greatest.' },
+    note:'Kiss or touch the Black Stone only if you can reach it without pushing. If crowded, pointing from where you stand is perfectly valid.'
+  },
+  { id:'t5', section:'tawaf', isCounter:true, counterKey:'tawaf',
+    text:"Walk counter-clockwise, Ka'bah on your LEFT.\n\n● Yemeni Corner (last corner before the Black Stone): touch with your right hand if possible — no dua. If crowded, walk past.\n\n● Between the Yemeni Corner and the Black Stone: recite the dua below — every circuit, all 7 times.\n\n● Back at the Black Stone = 1 circuit done. Point toward it, say Bismillāhi Allāhu Akbar, and tap the counter.",
+    dua:{ arabic:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', roman:"Rabbanā ātinā fid-dunyā ḥasanatan wa fil-ākhirati ḥasanatan wa qinā 'adhāban-nār", meaning:'Our Lord, give us good in this world, good in the Hereafter, and protect us from the Fire.' },
+    note:'For the rest of each circuit, no fixed dua — speak to Allah freely in any language. If you lose count, take the lower number you are sure of.',
+    detail:{ tips:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall and a line on the floor mark the Black Stone level.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','Stay calm and move with the flow of people.'] }
+  },
+  { id:'t6', section:'tawaf',
+    text:'After all 7 circuits, pray 2 rak\'ahs near Maqam Ibrahim. If you cannot get close, anywhere in the Masjid is fine.',
+    note:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.",
+    detail:{ history:"Maqam Ibrahim is the stone on which Ibrahim (AS) stood while building the Ka'bah. Allah commanded: 'Take the station of Ibrahim as a place of prayer.' (Quran 2:125)" }
+  },
+  { id:'t7', section:'tawaf',
+    text:'Drink Zamzam water. Face the Qiblah and drink in 3 sips. Before you drink, make dua — the Prophet ﷺ said Zamzam is for whatever it is drunk for. You may recite this dua, then ask Allah for whatever is in your heart:',
+    dua:{ arabic:'اللّٰهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ', roman:"Allāhumma innī as'aluka 'ilman nāfi'an wa rizqan wāsi'an wa shifā'an min kulli dā'", meaning:'O Allah, I ask You for beneficial knowledge, abundant provision, and cure from every illness.' },
+    note:'After this dua, ask for anything on your heart — your children, your family, your health, your deen. The personal dua here is what matters most.',
+    detail:{ history:"Zamzam has flowed continuously since Allah caused it to spring from the earth for baby Ismail (AS) when his mother Hajar desperately searched for water. It has never dried up in thousands of years. The Prophet ﷺ said: 'The best water on the face of the earth is Zamzam.' (Tabarani)" }
+  },
+  { id:'s1', section:'saee',
+    text:'Walk toward the Safa hill inside the Mas\'aa gallery. As you approach Safa for the first time, recite this verse — once only:',
+    dua:{ arabic:'إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللّٰهِ', roman:"Innaṣ-ṣafā wal-marwata min sha'ā'irillāh", meaning:'Indeed Safa and Marwa are among the rites of Allah. (Quran 2:158)' },
+    note:'Recite this only the first time approaching Safa — not on return laps.',
+    detail:{ history:"When the Prophet ﷺ approached Safa he recited this verse then said: 'We begin with what Allah began with.' (Sahih Muslim)" }
+  },
+  { id:'s2', section:'saee',
+    text:'Climb Safa. Face the Ka\'bah direction, raise your hands, and recite this dua 3 times. Between each repetition, lower your hands and make personal dua silently.',
+    dua:{ arabic:'اللّٰهُ أَكْبَرُ، اللّٰهُ أَكْبَرُ، اللّٰهُ أَكْبَرُ — لَا إِلَٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. لَا إِلَٰهَ إِلَّا اللّٰهُ وَحْدَهُ، أَنجَزَ وَعْدَهُ وَنَصَرَ عَبْدَهُ وَهَزَمَ الْأَحْزَابَ وَحْدَهُ', roman:"Allāhu Akbar, Allāhu Akbar, Allāhu Akbar — Lā ilāha illallāhu waḥdahu lā sharīka lah, lahul-mulku wa lahul-ḥamdu wa huwa 'alā kulli shay'in qadīr. Lā ilāha illallāhu waḥdah, anjaza wa'dahu wa naṣara 'abdahu wa hazamal-aḥzāba waḥdah.", meaning:'Allah is the Greatest (×3). There is no god but Allah alone, no partner has He. To Him belongs the kingdom and all praise, and He has power over all things. There is no god but Allah alone — He fulfilled His promise, gave victory to His servant, and defeated the confederates alone.' },
+    note:'Sequence: dua → personal dua → dua → personal dua → dua (3 times total). Repeat this same dua at Marwa on every lap. Take your time — this is a major dua opportunity.',
+    detail:{ history:'This is the exact dua the Prophet ﷺ made on Safa, narrated in Sahih Muslim (1218). He began with Allahu Akbar three times, said the dhikr, then made personal dua between each repetition. You are retracing his footsteps.' }
+  },
+  { id:'s3', section:'saee', isCounter:true, counterKey:'saee',
+    text:"Walk from Safa to Marwa — lap 1. Walk at your own pace the entire way.\n\nAt Marwa: climb, face the Ka'bah, and repeat the same dua 3 times with personal dua in between.\n\nWalk back to Safa — lap 2. Continue until lap 7, which ends on Marwa.",
+    notes:['Safa → Marwa = lap 1. Marwa → Safa = lap 2. You finish on Marwa at lap 7.','Tap the counter each time you arrive at a hill after walking — not at Safa at the very start.'],
+    detail:{ history:"Sa'ee commemorates Hajar (AS), wife of Ibrahim (AS), who ran between these hills searching for water for her infant son Ismail. Her trust in Allah caused the Zamzam spring to burst from the earth. Every step honours her faith.", tips:["Between the hills: no fixed dua — make sincere personal dua the whole way.","Women walk at a normal pace the entire Sa'ee.","Men walk briskly between the two green lights on the walls."] }
+  },
+  { id:'c1', section:'completion',
+    text:"Trim a fingertip's length from the ends of your hair. This can be done under your hijab — it does not need to be visible.",
+    note:'Shaving is for men only. Women trim. Once done, all Ihram restrictions are lifted.',
+    detail:{ tips:['You or your husband can trim a small section from the ends.','Even a few strands from around the hairline is sufficient.'] }
+  },
+  { id:'c2', section:'completion',
+    text:'Your Umrah is complete 🤍. Ask Allah to accept it:',
+    dua:{ arabic:'اللّٰهُمَّ تَقَبَّلْ مِنِّي إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ', roman:"Allāhumma taqabbal minnī innaka antas-samī'ul-'alīm", meaning:'O Allah, accept from me. Indeed You are the All-Hearing, All-Knowing.' },
+    note:"You may also say مِنَّا (minnā — 'from us') to include your husband and family."
+  },
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let activeSection = 'ihram';
+const checked  = {};
+const counters = { tawaf: 0, saee: 0 };
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function sectionDone(key) {
+  return STEPS.filter(s => s.section === key).every(s =>
+    s.isCounter ? counters[s.counterKey] >= 7 : !!checked[s.id]
+  );
+}
+
+function totalProgress() {
+  const checkable = STEPS.filter(s => !s.isCounter);
+  const done = checkable.filter(s => checked[s.id]).length
+    + (counters.tawaf >= 7 ? 1 : 0)
+    + (counters.saee  >= 7 ? 1 : 0);
+  const total = checkable.length + 2;
+  return { done, total, pct: Math.round((done / total) * 100) };
+}
+
+function globalStepNum(id) {
+  const checkable = STEPS.filter(s => !s.isCounter);
+  return checkable.findIndex(s => s.id === id) + 1;
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function render() {
+  renderTabs();
+  renderSectionHeading();
+  renderSteps();
+  renderProgress();
+}
+
+function renderProgress() {
+  const { pct } = totalProgress();
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '% complete';
+}
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    const done = sectionDone(sec.key);
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (sec.key === activeSection ? ' active' : '');
+    btn.innerHTML = `<span>${done ? '✅' : sec.emoji}</span><span>${sec.label}</span>`;
+    btn.onclick = () => { activeSection = sec.key; render(); window.scrollTo(0,0); };
+    el.appendChild(btn);
+  });
+}
+
+function renderSectionHeading() {
+  const sec = SECTIONS.find(s => s.key === activeSection);
+  const visible = STEPS.filter(s => s.section === activeSection);
+  const doneCt = visible.filter(s => s.isCounter ? counters[s.counterKey] >= 7 : !!checked[s.id]).length;
+  document.getElementById('section-title').textContent = sec.emoji + '  ' + sec.label;
+  document.getElementById('section-sub').textContent = sec.sub;
+  document.getElementById('section-count').textContent = doneCt + ' / ' + visible.length + ' done';
+}
+
+function renderSteps() {
+  const container = document.getElementById('steps');
+  container.innerHTML = '';
+  const visible = STEPS.filter(s => s.section === activeSection);
+  const sectionIdx = SECTIONS.findIndex(s => s.key === activeSection);
+  const prog = totalProgress();
+  const allDone = prog.done === prog.total;
+
+  visible.forEach(step => {
+    const isDone = step.isCounter ? counters[step.counterKey] >= 7 : !!checked[step.id];
+    const div = document.createElement('div');
+    div.className = 'step' + (isDone ? ' done' : '');
+
+    // Circle
+    const circle = document.createElement('div');
+    if (step.isCounter) {
+      circle.className = 'circle counter-circle' + (isDone ? ' counter-done' : '');
+      circle.textContent = isDone ? '✓' : '🔢';
+    } else {
+      const num = globalStepNum(step.id);
+      circle.className = 'circle' + (isDone ? ' checked' : '');
+      circle.textContent = isDone ? '✓' : num;
+      circle.onclick = () => { checked[step.id] = !checked[step.id]; render(); };
+    }
+    div.appendChild(circle);
+
+    // Content
+    const content = document.createElement('div');
+    content.className = 'step-content';
+
+    // Text
+    const p = document.createElement('p');
+    p.className = 'step-text';
+    p.textContent = step.text;
+    content.appendChild(p);
+
+    // Note(s)
+    if (step.note) content.appendChild(makeNote(step.note));
+    if (step.notes) step.notes.forEach(n => content.appendChild(makeNote(n)));
+
+    // Dua
+    if (step.dua) content.appendChild(makeDua(step.dua));
+
+    // Counter widget
+    if (step.isCounter) content.appendChild(makeCounter(step));
+
+    // Learn more
+    if (step.detail) content.appendChild(makeLearnMore(step.detail));
+
+    // Mark done button
+    if (!step.isCounter) {
+      const btn = document.createElement('button');
+      btn.className = 'mark-btn' + (isDone ? ' done' : '');
+      btn.textContent = isDone ? '✓ Done — tap to undo' : 'Mark as done';
+      btn.onclick = () => { checked[step.id] = !checked[step.id]; render(); };
+      content.appendChild(btn);
+    }
+
+    div.appendChild(content);
+    container.appendChild(div);
+  });
+
+  // Next section button
+  if (sectionIdx < SECTIONS.length - 1) {
+    const next = SECTIONS[sectionIdx + 1];
+    const btn = document.createElement('button');
+    const ready = sectionDone(activeSection);
+    btn.className = 'next-btn' + (ready ? ' ready' : '');
+    btn.textContent = (ready ? 'Next: ' : 'Skip to ') + next.emoji + ' ' + next.label + ' →';
+    btn.onclick = () => { activeSection = next.key; render(); window.scrollTo(0,0); };
+    container.appendChild(btn);
+  }
+
+  // Completion card
+  const card = document.createElement('div');
+  card.className = 'completion-card' + (allDone ? ' show' : '');
+  card.innerHTML = `
+    <p class="completion-arabic">تَقَبَّلَ اللّٰهُ مِنْكِ</p>
+    <p class="completion-roman">Taqabbalallāhu minki</p>
+    <p class="completion-msg">May Allah accept your Umrah. 🤍</p>
+  `;
+  container.appendChild(card);
+}
+
+function makeNote(text) {
+  const d = document.createElement('div');
+  d.className = 'note';
+  d.innerHTML = `<span style="font-size:14px;flex-shrink:0">💡</span><p>${text}</p>`;
+  return d;
+}
+
+function makeDua(dua) {
+  const d = document.createElement('div');
+  d.className = 'dua-box';
+  d.innerHTML = `
+    <p class="dua-arabic">${dua.arabic}</p>
+    <p class="dua-roman">${dua.roman}</p>
+    <p class="dua-meaning">${dua.meaning}</p>
+  `;
+  return d;
+}
+
+function makeCounter(step) {
+  const key = step.counterKey;
+  const current = counters[key];
+  const total = 7;
+  const done = current >= total;
+  const label = key === 'tawaf' ? "Circuits around the Ka'bah" : 'Laps between Safa & Marwa';
+
+  const d = document.createElement('div');
+  d.className = 'counter' + (done ? ' done' : '');
+
+  const dots = Array.from({length: total}, (_,i) =>
+    `<div class="dot${i < current ? (done ? ' filled done' : ' filled') : ''}"></div>`
+  ).join('');
+
+  const btnLabel = done ? '✓ Complete!' : `Complete ${key === 'tawaf' ? 'circuit' : 'lap'} ${current + 1}`;
+
+  d.innerHTML = `
+    <p class="counter-label">${label}</p>
+    <p class="counter-number${done ? ' done' : ''}">${current}<span> / ${total}</span></p>
+    <div class="counter-dots">${dots}</div>
+    <div class="counter-btns">
+      <button class="btn-minus" ${current === 0 ? 'disabled' : ''}>−</button>
+      <button class="btn-add${done ? ' done' : ''}">${btnLabel}</button>
+    </div>
+    ${done ? '<p class="counter-alhamdulillah">الحمد لله</p>' : ''}
+  `;
+
+  d.querySelector('.btn-minus').onclick = () => {
+    if (counters[key] > 0) { counters[key]--; render(); }
+  };
+  d.querySelector('.btn-add').onclick = () => {
+    if (counters[key] < 7) { counters[key]++; render(); }
+  };
+
+  return d;
+}
+
+function makeLearnMore(detail) {
+  const d = document.createElement('div');
+  d.className = 'learn-more';
+  const btn = document.createElement('button');
+  btn.className = 'learn-toggle';
+  btn.innerHTML = '<span style="font-size:16px">▸</span> Learn more';
+  const body = document.createElement('div');
+  body.className = 'learn-body';
+
+  if (detail.history) {
+    const p = document.createElement('p');
+    p.className = 'learn-history';
+    p.textContent = '📖 ' + detail.history;
+    body.appendChild(p);
+  }
+  if (detail.tips) {
+    detail.tips.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'learn-tip';
+      row.innerHTML = `<span class="learn-tip-dot">•</span><p>${t}</p>`;
+      body.appendChild(row);
+    });
+  }
+
+  btn.onclick = () => {
+    const isOpen = body.classList.toggle('open');
+    btn.innerHTML = `<span style="font-size:16px">${isOpen ? '▾' : '▸'}</span> ${isOpen ? 'Hide details' : 'Learn more'}`;
+  };
+
+  d.appendChild(btn);
+  d.appendChild(body);
+  return d;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
