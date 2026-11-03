@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Sabrina's Umrah Guide</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Umrah Guide">
 <meta name="theme-color" content="#1F5C5C">
-<title>Sabrina's Umrah Guide</title>
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { color-scheme: light; }
   body { margin: 0; font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #FAF8F4; color: #18282A; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: #1F5C5C; }
   #app { max-width: 460px; margin: 0 auto; min-height: 100vh; padding-bottom: 40px; }
 
   /* Header */
   .header {
     background: linear-gradient(160deg, #1F5C5C 0%, #163F3F 100%);
     padding: 22px 18px 18px; color: #fff;
-    position: sticky; top: 0; z-index: 20;
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
     box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   }
   .header-label { margin: 0 0 1px; font-size: 11px; opacity: 0.6; letter-spacing: 2.5px; text-transform: uppercase; }
@@ -39,13 +37,15 @@
     background: rgba(255,255,255,0.1); color: #fff; font-weight: 500;
   }
   .tab.active { background: #fff; color: #1F5C5C; font-weight: 700; border: none; }
+  .tab.pre { border-style: dashed; }
+  .tab.pre.active { border: none; }
 
   /* Section heading */
   .section-heading { padding: 20px 18px 4px; }
-  .section-heading-row { display: flex; align-items: baseline; justify-content: space-between; }
+  .section-heading-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
   .section-title { margin: 0 0 2px; font-size: 20px; font-weight: 800; color: #18282A; }
   .section-sub { margin: 0; font-size: 13px; color: #5A7070; }
-  .section-count { font-size: 13px; color: #5A7070; font-weight: 600; }
+  .section-count { font-size: 13px; color: #5A7070; font-weight: 600; white-space: nowrap; }
   .divider { height: 1px; background: #E2DAD0; margin-top: 14px; }
 
   /* Steps */
@@ -65,7 +65,7 @@
   .circle.counter-done { background: #1F5C5C; color: #fff; font-size: 15px; font-weight: 700; }
 
   /* Content */
-  .step-content { flex: 1; }
+  .step-content { flex: 1; min-width: 0; }
   .step-text { margin: 0; font-size: 16px; line-height: 1.75; color: #18282A; white-space: pre-line; font-weight: 400; }
 
   /* Note */
@@ -113,6 +113,13 @@
   .learn-tip-dot { color: #8A6A00; flex-shrink: 0; margin-top: 2px; font-size: 16px; font-weight: 700; }
   .learn-tip p { margin: 0; font-size: 14px; color: #0E2828; line-height: 1.65; font-weight: 400; }
 
+  /* Story link inside a rite step */
+  .story-link {
+    margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
+    background: #FDF6E3; border: 1px solid #E0C97A; color: #6A4E00;
+    border-radius: 99px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+
   /* Mark done button */
   .mark-btn {
     margin-top: 14px; padding: 10px 20px; border-radius: 99px;
@@ -144,13 +151,60 @@
   .completion-arabic { font-family: Georgia, serif; font-size: 30px; margin: 0 0 10px; line-height: 1.6; }
   .completion-roman { margin: 0 0 6px; font-size: 16px; opacity: 0.95; font-style: italic; }
   .completion-msg { margin: 0; font-size: 14px; opacity: 0.85; }
+
+  /* ── Pre-read ─────────────────────────────────────────── */
+  .pre-intro { margin: 16px 0 6px; font-size: 15px; line-height: 1.7; color: #2A3A3B; }
+  .group-label { margin: 22px 0 10px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #8A6A00; font-weight: 700; }
+  .story { background: #fff; border: 1px solid #E2DAD0; border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+  .story.read { border-color: #B7D3CC; }
+  .story.kaaba { border-color: #E0C97A; background: #FFFCF4; }
+  .story.kaaba .story-num { background: #FDF6E3; }
+  .story summary {
+    list-style: none; cursor: pointer; padding: 15px 16px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .story summary::-webkit-details-marker { display: none; }
+  .story summary:focus-visible, .story-link:focus-visible, .tab:focus-visible, .mark-btn:focus-visible { outline: 2px solid #B8943A; outline-offset: 2px; }
+  .story-num {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+    background: #EAF4F4; color: #1F5C5C; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .story.read .story-num { background: #1F5C5C; color: #fff; }
+  .story-head { flex: 1; min-width: 0; }
+  .story-title { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.4; color: #18282A; }
+  .story-meta { margin: 3px 0 0; font-size: 12.5px; color: #5A7070; line-height: 1.5; }
+  .story-chev { flex-shrink: 0; color: #8A9FA0; font-size: 14px; margin-top: 6px; transition: transform 0.2s; }
+  .story[open] .story-chev { transform: rotate(90deg); }
+  .story-body { padding: 2px 16px 18px; border-top: 1px solid #EEE9E0; }
+  .story-body h4 { margin: 18px 0 6px; font-size: 14px; font-weight: 800; color: #1F5C5C; }
+  .story-body p { margin: 0 0 10px; font-size: 15px; line-height: 1.75; color: #18282A; }
+  .story-body ul { margin: 0 0 10px; padding-left: 18px; }
+  .story-body li { font-size: 15px; line-height: 1.7; margin-bottom: 6px; color: #18282A; }
+  .story-body .src { font-size: 12.5px; color: #5A7070; }
+  .story-body .dua-box { margin: 10px 0 14px; }
+  .live-it { margin-top: 16px; background: #E0EEEE; border-left: 3px solid #1F5C5C; border-radius: 10px; padding: 12px 14px; }
+  .live-it h5 { margin: 0 0 8px; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: #1F5C5C; font-weight: 800; }
+  .live-it ul { margin: 0; padding-left: 16px; }
+  .live-it li { font-size: 14px; line-height: 1.6; color: #0E2828; margin-bottom: 5px; }
+  .aside { background: #FDF6E3; border: 1px solid #E0C97A; border-radius: 10px; padding: 12px 14px; margin-top: 14px; }
+  .aside p { margin: 0; font-size: 14px; line-height: 1.65; color: #2A1E00; }
+  .read-btn { margin-top: 16px; }
+  .short { padding: 0 16px 16px; }
+  .short p { margin: 0 0 8px; font-size: 15px; line-height: 1.7; color: #18282A; }
+  .short .where { font-size: 13.5px; color: #1F5C5C; font-weight: 600; }
+  .takeaways { background: linear-gradient(135deg, #1F5C5C, #163F3F); color: #fff; border-radius: 14px; padding: 18px 16px; margin-top: 22px; }
+  .takeaways h3 { margin: 0 0 10px; font-size: 15px; font-weight: 800; }
+  .takeaways ul { margin: 0; padding-left: 18px; }
+  .takeaways li { font-size: 14px; line-height: 1.65; margin-bottom: 6px; opacity: 0.95; }
+
+  @media (prefers-reduced-motion: reduce) { .progress-fill, .story-chev, .dot { transition: none; } }
 </style>
-</head>
-<body>
+
 <div id="app">
   <!-- Header -->
   <div class="header">
-    <p class="header-label">Step-by-step guide</p>
+    <p class="header-label">Step-by-step guide · Hanafi</p>
     <h1 class="header-title">Sabrina's Umrah 🤍</h1>
     <div class="progress-row">
       <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -176,117 +230,307 @@
 </div>
 
 <script>
-const C = {
-  teal: '#1F5C5C', tealFaint: '#EAF4F4',
-  gold: '#B8943A', goldFaint: '#FDF8EE', goldBorder: '#E0C97A',
-  cream: '#FAF8F4', dark: '#18282A', mid: '#4A5F60',
-  muted: '#8A9FA0', border: '#E2DAD0', white: '#FFFFFF', green: '#2E7D52'
-};
-
 const SECTIONS = [
+  { key:'preread',    label:'Pre-read', emoji:'📖', sub:'The stories behind the places' },
   { key:'ihram',      label:'Ihram',  emoji:'🌿', sub:'Before the Miqat' },
   { key:'tawaf',      label:'Tawaf',  emoji:'🕋', sub:'7 circuits'       },
   { key:'saee',       label:"Sa'ee",  emoji:'🏃‍♀️', sub:'7 laps'           },
   { key:'completion', label:'Done',   emoji:'✂️', sub:'Final step'       },
 ];
 
+// ── Pre-read stories ──────────────────────────────────────────────────────────
+const STORIES = [
+  { id:'ibrahim', title:'Ibrahim, Ismail and Hajar', meta:'The origin of the Kaaba, sa\'ee and Zamzam', body:`
+    <h4>The valley</h4>
+    <p>Allah commanded Ibrahim (AS) to take his wife Hajar and their infant son Ismail to a barren valley with no water, no crops and no people. That valley became Makkah. He left them near the spot where the Kaaba would later stand, with only a bag of dates and a skin of water.</p>
+    <p>As he walked away, Hajar followed him and asked again and again why he was leaving them there. He didn't answer. Finally she asked, <em>"Did Allah command you to do this?"</em> He said yes. She replied that, if so, Allah would not abandon them, and she returned to her son. Her certainty is the spirit of the whole pilgrimage. <span class="src">(Ibn Abbas, Sahih al-Bukhari 3364)</span></p>
+    <h4>Ibrahim's du'a</h4>
+    <p>Out of sight, Ibrahim turned toward the place of the House and prayed that Allah make people's hearts incline toward this valley and provide its people with fruits <span class="src">(Qur'an 14:37)</span>. Every crowd in the Haram, and every fruit stall in Makkah, is that du'a being answered.</p>
+    <h4>The search between Safa and Marwah</h4>
+    <p>When the water ran out, Hajar's milk dried up and Ismail began to cry in distress. She climbed Safa to look for anyone, saw no one, and came down. In the low part of the valley she hitched up her dress and <em>ran</em> until she reached Marwah, then climbed it and looked again. She did this seven times.</p>
+    <h4>Zamzam</h4>
+    <p>On the seventh round she heard a sound. An angel, Jibril, struck the ground near Ismail, and water burst out. Hajar hurried to contain it, building a basin around it with her hands. The Prophet ﷺ said that if she had left it alone, Zamzam would have become a flowing stream on the surface. Soon the Jurhum tribe passed by, saw birds circling, and asked her permission to settle. Makkah began as a town around this well.</p>
+    <h4>The sacrifice</h4>
+    <p>When Ismail was old enough to work beside his father, Ibrahim saw in a dream that he was sacrificing him. Ismail told him to do as he was commanded, and that he would find him patient <span class="src">(Qur'an 37:102)</span>. Both submitted, and Allah ransomed Ismail with a ram. This is the root of Eid al-Adha and of the stoning rituals of Hajj in Mina.</p>
+    <h4>Building the House</h4>
+    <p>Years later Ibrahim returned, and father and son raised the foundations of the Kaaba together. Ismail brought the stones and Ibrahim laid them. As the walls grew higher, Ibrahim stood on a stone to keep building. That stone is the <strong>Maqam Ibrahim</strong>, and his footprints are still visible in it. As they worked they prayed:</p>
+    <div class="dua-box">
+      <p class="dua-arabic">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ</p>
+      <p class="dua-roman">Rabbanā taqabbal minnā, innaka antas-Samī'ul-'Alīm</p>
+      <p class="dua-meaning">Our Lord, accept this from us; You are the All-Hearing, the All-Knowing. (Qur'an 2:127)</p>
+    </div>
+    <p>They also asked Allah to send a messenger from among their descendants <span class="src">(2:129)</span>. Muslims understand this du'a to have been fulfilled about 2,500 years later in the Prophet Muhammad ﷺ, a descendant of Ismail.</p>
+    <p>Allah then commanded Ibrahim to call people to pilgrimage <span class="src">(22:27)</span>. Ibrahim asked how his voice could reach anyone, and Allah told him that his task was to call and that Allah would make it reach. Your Talbiyah is the answer to that call.</p>
+    <div class="live-it"><h5>Where you'll live this story</h5><ul>
+      <li><strong>Tawaf</strong> circles the House that Ibrahim and Ismail built.</li>
+      <li><strong>The two rak'ahs after tawaf</strong> are prayed behind Maqam Ibrahim: "Take the station of Ibrahim as a place of prayer" (2:125).</li>
+      <li><strong>Sa'ee</strong> retraces Hajar's steps. The green-lit section marks the low valley floor where she ran. You are walking the path of a mother's trust.</li>
+      <li><strong>Zamzam</strong> is for whatever it is drunk for (Ibn Majah). Make a specific intention each time you drink.</li>
+      <li><strong>Hijr Ismail</strong>, the semicircle beside the Kaaba, is part of the original House. Praying inside it counts as praying inside the Kaaba.</li>
+    </ul></div>` },
+
+  { id:'makkan', title:'The Makkan period', meta:'Revelation at Hira, persecution, the Year of Sorrow', body:`
+    <h4>Before prophethood</h4>
+    <p>The Prophet ﷺ was born in Makkah around 570 CE, in the Year of the Elephant. His father died before he was born, his mother when he was six, and his grandfather Abdul-Muttalib two years later. His uncle Abu Talib raised him. He became known as <strong>al-Amin</strong>, the trustworthy. At 25 he married <strong>Khadijah (RA)</strong>, a respected businesswoman who had employed him in trade.</p>
+    <p>At around 35, the Quraysh rebuilt the Kaaba, and the clans nearly fought over who would set the Black Stone back in place. They agreed to let the next man to enter decide, and it was Muhammad ﷺ. He spread his cloak, placed the Stone on it, had a leader from each clan lift a corner, and then set the Stone in place with his own hands. The Black Stone you'll see was put in place by the Prophet ﷺ himself.</p>
+    <h4>Hira</h4>
+    <p>In his late thirties he began retreating to a small cave near the top of <strong>Jabal al-Nur</strong> to reflect and worship. In Ramadan of 610 CE, at age 40, the angel Jibril appeared and commanded him: <em>"Iqra!"</em> ("Read!"). He answered, "I am not one who reads." Jibril embraced him tightly and repeated the command, three times in all. Then came the first revealed verses:</p>
+    <div class="dua-box">
+      <p class="dua-arabic">اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ</p>
+      <p class="dua-roman">Iqra' bismi rabbikal-ladhī khalaq</p>
+      <p class="dua-meaning">Read in the name of your Lord who created. (Qur'an 96:1)</p>
+    </div>
+    <p>He came down trembling and went to Khadijah, saying, "Cover me, cover me." She reassured him: Allah would never disgrace him, because he kept family ties, helped the weak, gave to the poor, honored guests, and stood by people in hardship. She became the first person to believe in him. Her cousin <strong>Waraqah ibn Nawfal</strong>, an elderly Christian scholar, recognized this as the same angelic messenger sent to Musa, and warned that his people would drive him out. <span class="src">(Sahih al-Bukhari 3)</span></p>
+    <h4>The call becomes public</h4>
+    <p>After about three years of quiet preaching, the Prophet ﷺ climbed <strong>Safa</strong>, the same hill where you'll begin sa'ee, and called out to the clans of Quraysh. He asked whether they would believe him if he told them an army was behind the hill. They said yes, because they had never known him to lie. He told them he was a warner before a severe punishment. His uncle <strong>Abu Lahab</strong> cursed him, and Surah al-Masad (111) was revealed in response.</p>
+    <h4>Persecution</h4>
+    <ul>
+      <li><strong>Bilal ibn Rabah</strong> was laid on the burning sand with a boulder on his chest. He would only repeat <em>"Ahad, Ahad"</em> ("One, One").</li>
+      <li><strong>Sumayyah</strong>, mother of Ammar, became the first martyr of Islam. The Prophet ﷺ told her family to be patient, because their promised meeting place was Paradise.</li>
+      <li>The Prophet ﷺ himself was mocked and called a madman. Once, while he was in sujood near the Kaaba, filth from a slaughtered camel was dumped on his back. His daughter Fatimah came and cleaned it off.</li>
+      <li>Some Muslims migrated to <strong>Abyssinia</strong> under the just Christian king, the Najashi.</li>
+      <li>The conversions of <strong>Hamza</strong> and then <strong>Umar</strong> gave the Muslims new strength.</li>
+      <li>Around 616 CE the Quraysh imposed a <strong>boycott</strong>, confining the Prophet's clan to a valley for about three years. Hunger was so severe that people ate leaves.</li>
+    </ul>
+    <h4>The Year of Sorrow (619 CE)</h4>
+    <p>Shortly after the boycott ended, Abu Talib died. He never accepted Islam, but he had protected his nephew all his life. Within weeks, <strong>Khadijah</strong> died: his wife of 25 years, his first believer and his greatest support. He remembered her with deep love for the rest of his life.</p>
+    <h4>Ta'if</h4>
+    <p>With his protection gone, he walked to Ta'if to seek support. Its leaders rejected him and set people on him who pelted him with stones until his feet bled. Resting in an orchard, he made a heartbreaking du'a: as long as Allah was not displeased with him, he did not care about anything else. The Angel of the Mountains offered to crush the city between two mountains. He refused, hoping that from their descendants would come people who worship Allah alone. That hope came true.</p>
+    <p>Soon after came the <strong>Isra' and Mi'raj</strong>, the Night Journey from Masjid al-Haram to Jerusalem and the ascension through the heavens, where the five daily prayers were prescribed.</p>
+    <h4>The way out</h4>
+    <p>At the pilgrimage seasons, the Prophet ﷺ met people from Yathrib (Madinah). They pledged allegiance at <strong>Aqabah</strong> in 621 and 622, which opened the door to the Hijrah.</p>
+    <div class="live-it"><h5>Where you'll see it</h5><ul>
+      <li><strong>Jabal al-Nur</strong> is visible from much of Makkah. The hike to Hira is steep; go early in the morning. It isn't part of Umrah.</li>
+      <li><strong>Jannat al-Mu'alla</strong> cemetery is where Khadijah is buried.</li>
+      <li><strong>Safa</strong>, where you'll start sa'ee, is where he first preached openly.</li>
+      <li>When you point to <strong>the Black Stone</strong>, remember whose hands set it in place.</li>
+    </ul></div>` },
+
+  { id:'hijrah', title:'The Hijrah', meta:'Cave Thawr, arrival at Quba, the stay with Abu Ayyub al-Ansari', body:`
+    <h4>The plot</h4>
+    <p>By 622 CE most Muslims had quietly left for Madinah. The Quraysh agreed that one young man from each clan would strike the Prophet ﷺ at once, so no single clan could be held responsible. Allah informed him of the plot. That night <strong>Ali (RA)</strong> slept in his bed under his green cloak, and stayed behind to return the valuables people had entrusted to the Prophet. Even his enemies trusted him with their belongings. The Prophet ﷺ walked out past the assassins at his door, reciting from Surah Ya-Sin (36:9), and they did not see him.</p>
+    <h4>Cave Thawr</h4>
+    <p>He and <strong>Abu Bakr (RA)</strong> headed <em>south</em> to Mount Thawr, the opposite direction from Madinah, and hid in a cave for three nights. The plan was careful:</p>
+    <ul>
+      <li>Abu Bakr's son <strong>Abdullah</strong> gathered news in Makkah by day and brought it to the cave at night.</li>
+      <li>His freed slave <strong>Amir ibn Fuhayrah</strong> grazed sheep over their tracks to erase them.</li>
+      <li>His daughter <strong>Asma</strong> brought food. She tore her waistband in two to tie up the provisions, and was honored as <em>Dhat an-Nitaqayn</em>, "she of the two waistbands."</li>
+      <li>They hired a guide, <strong>Abdullah ibn Urayqit</strong>, who was not Muslim but was trustworthy.</li>
+    </ul>
+    <p>The Quraysh offered a bounty of 100 camels and sent trackers, who climbed right up to the cave's mouth. Abu Bakr whispered that if one of them looked down at his own feet, he would see them. The Prophet ﷺ answered, <em>"What do you think of two, when Allah is their third?"</em></p>
+    <div class="dua-box">
+      <p class="dua-arabic">لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا</p>
+      <p class="dua-roman">Lā taḥzan innallāha ma'anā</p>
+      <p class="dua-meaning">Do not grieve; indeed Allah is with us. (Qur'an 9:40)</p>
+    </div>
+    <p class="src">You'll often hear that a spider spun a web and doves nested at the entrance. That story is widely loved, but its chains of narration are weaker than the core account.</p>
+    <h4>The road</h4>
+    <p>On the way north, <strong>Suraqa ibn Malik</strong> chased them hoping to collect the bounty. Three times his horse's legs sank into the sand. He asked for safety, and the Prophet ﷺ promised he would one day wear the bracelets of Kisra, the Persian emperor. Years later, under Umar's caliphate, Persia's treasures came to Madinah and Umar placed those bracelets on Suraqa's arms.</p>
+    <h4>Quba</h4>
+    <p>The Muslims of Madinah walked out every morning to the edge of the city and waited in the heat until midday. One day a man spotted the travelers and cried out, and the town rushed to greet them. The Prophet ﷺ stayed in <strong>Quba</strong> for several days and laid the foundation of the <strong>first mosque in Islam</strong>, described as founded on taqwa from the first day <span class="src">(9:108)</span>. He ﷺ later said that whoever purifies himself at home, then comes to Masjid Quba and prays there, receives the reward of an umrah <span class="src">(Ibn Majah, an-Nasa'i)</span>. He used to visit it every Saturday.</p>
+    <h4>Entering Madinah</h4>
+    <p>On the way in he led the first Jumu'ah prayer. Every family wanted to host him and grabbed at the reins of his camel, <strong>al-Qaswa</strong>. He told them to let her go, because she was under command. She knelt on a plot belonging to two orphans, Sahl and Suhayl. That land was purchased and became the site of <strong>Masjid an-Nabawi</strong>.</p>
+    <h4>Abu Ayyub al-Ansari</h4>
+    <p>The closest house belonged to <strong>Abu Ayyub (Khalid ibn Zayd)</strong>, and the Prophet ﷺ stayed there about seven months, until his rooms beside the mosque were finished. He chose the ground floor so visitors could reach him easily. Abu Ayyub and his wife were deeply uncomfortable sleeping above him. One night a jar of water broke upstairs, and they used their only blanket to soak it up so not a drop would drip on him. Abu Ayyub then begged him to switch floors, and he agreed. When food was sent back down, they would look for the places the Prophet's fingers had touched and eat from there.</p>
+    <div class="aside"><p>🔗 <strong>A link to your trip:</strong> Decades later, as an old man, Abu Ayyub joined the army besieging Constantinople and died there around 672 CE, asking to be buried as close to the walls as possible. His tomb is the <strong>Eyüp Sultan Mosque</strong> in Istanbul. Visiting it after Madinah ties the two halves of your trip together: where he hosted the Prophet ﷺ, and where he was laid to rest.</p></div>
+    <div class="live-it"><h5>Where you'll see it</h5><ul>
+      <li><strong>Masjid Quba:</strong> make wudu at the hotel first, then go, for the reward of an umrah.</li>
+      <li><strong>Masjid an-Nabawi</strong> stands on the orphans' land where al-Qaswa knelt.</li>
+      <li><strong>Mount Thawr</strong> is south of Makkah; worth seeing on a ziyarah drive.</li>
+      <li><strong>Eyüp Sultan Mosque</strong> in Istanbul.</li>
+    </ul></div>` },
+];
+
+const KAABA = { title:'Looking at the Ka\'bah', meta:'The reward, what it means, and how to take it in', body:`
+    <h4>The first sight</h4>
+    <p>You've faced this building in every prayer of your life without seeing it. When it first comes into view, don't rush to start tawaf or take out your phone. Stop, raise your hands, and ask. Many scholars held that du'a at the first sight of the Ka'bah is especially hoped to be answered. Decide in advance what you'll ask for first, so the moment doesn't pass in a blur.</p>
+    <p>Some early generations would say a du'a like this on seeing it. Its chain to the Prophet ﷺ is weak, so say it as a beautiful du'a rather than a sunnah:</p>
+    <div class="dua-box">
+      <p class="dua-arabic">اللّٰهُمَّ زِدْ هٰذَا الْبَيْتَ تَشْرِيفًا وَتَعْظِيمًا وَتَكْرِيمًا وَمَهَابَةً</p>
+      <p class="dua-roman">Allāhumma zid hādhal-bayta tashrīfan wa ta'ẓīman wa takrīman wa mahābah</p>
+      <p class="dua-meaning">O Allah, increase this House in honor, greatness, nobility and awe.</p>
+    </div>
+    <h4>The reward for looking at it</h4>
+    <p>Simply looking at the Ka'bah is counted as worship.</p>
+    <p>A narration from Ibn Abbas describes how the mercy is shared out:</p>
+    <div class="dua-box">
+      <p class="dua-meaning">"Allah sends down upon this House one hundred and twenty mercies every day: sixty for those making tawaf, forty for those praying, and twenty for those looking at it."</p>
+      <p class="dua-roman" style="margin:8px 0 0">al-Tabarani; al-Bayhaqi, Shu'ab al-Iman</p>
+    </div>
+    <p>Its chain is graded weak by hadith scholars, so it isn't certain the Prophet ﷺ said it. Many scholars still cite it to encourage good deeds, and its meaning matches what early scholars taught. It also shows that every way of being near the House earns mercy: when you're too tired for another tawaf, or the mataf is too packed, sitting and looking still counts.</p>
+    <p>Sa'id ibn al-Musayyib, one of the great early scholars, said that whoever looks at the Ka'bah with faith and sincerity has his sins fall away like leaves from a tree.</p>
+    <h4>The angels' tawaf above you</h4>
+    <p>On the Night Journey, the Prophet ﷺ was shown <strong>al-Bayt al-Ma'mur</strong>, the "Frequented House" in the seventh heaven. Seventy thousand angels enter it every day to worship, and they never return to it again, because their turn never comes back (Sahih al-Bukhari 3207; Sahih Muslim 162). Allah swears by it in Surah at-Tur (52:4). Early commentators described it as lying directly above the Ka'bah, so that if it fell, it would fall onto it.</p>
+    <p>So when you join the tawaf, you are not only joining the crowd around you. You are mirroring a worship that goes on, without pause, in the heavens above. And the person the Prophet ﷺ saw sitting with his back against al-Bayt al-Ma'mur was <strong>Ibrahim (AS)</strong>, the builder of the House you are circling.</p>
+    <h4>It never stops</h4>
+    <p>Apart from the moments of congregational prayer, tawaf around the Ka'bah almost never stops, day or night, heat or rain. People have circled it for thousands of years, since Ibrahim and Ismail. When you step into the flow, you join a line that runs back through the Prophet ﷺ, the companions, and every pilgrim since, and that will carry on after you leave.</p>
+    <h4>What it means</h4>
+    <ul>
+      <li><strong>Simplicity.</strong> It is a plain cube of stone, empty inside. There is no image or statue to look at. The point is not the building; it is the One it belongs to. Surah Quraysh calls Allah <em>"the Lord of this House"</em> (106:3).</li>
+      <li><strong>The first House.</strong> "The first House set up for mankind is the one at Bakkah, blessed and a guidance for the worlds" (3:96).</li>
+      <li><strong>The center of every circle.</strong> Everywhere else, Muslims pray in straight rows. Here, and only here, the rows bend into rings around one point. You can see people praying toward you from the other side. This is what the whole ummah looks like from above.</li>
+      <li><strong>The answer to a du'a.</strong> Ibrahim asked Allah to make hearts incline toward this valley (14:37). Your own longing to be here is part of that answer.</li>
+    </ul>
+    <h4>Something greater than the Ka'bah</h4>
+    <p>Ibn Umar reported that the Prophet ﷺ looked at the Ka'bah and said: <em>"How pure you are, how pure your fragrance; how great you are and how great your sanctity. But by Him in whose hand is Muhammad's soul, the sanctity of a believer is greater with Allah than yours: his wealth, his blood, and to think anything but good of him."</em> (Ibn Majah 3932)</p>
+    <p>Remember this in the crowd. Pushing someone to reach the Black Stone or to get closer to the wall trades something greater for something lesser.</p>
+    <h4>Details to look for</h4>
+    <ul>
+      <li><strong>The kiswah:</strong> the black silk cover, with Qur'anic verses woven in gold thread around its upper band. It is replaced every year.</li>
+      <li><strong>The door:</strong> on the east wall, raised above the ground, covered in gold. Its key is still held by the Banu Shaybah family.</li>
+      <li><strong>The Multazam:</strong> the stretch of wall between the Black Stone and the door, where companions pressed themselves and made du'a.</li>
+      <li><strong>The Mizab:</strong> the golden rain spout on the roof, draining into the Hijr Ismail.</li>
+      <li><strong>The two corners on Ibrahim's foundations:</strong> the Black Stone corner and the Yemeni corner. The other two follow the Quraysh rebuild, which left out the Hijr.</li>
+    </ul>
+    <h4>Ways to take it in</h4>
+    <ul>
+      <li><strong>Just sit and look.</strong> Looking is worship in itself, so give yourself time with no task: no tawaf, no reading, only looking, dhikr and du'a.</li>
+      <li><strong>Try different times and levels.</strong> After Fajr as the sky lightens, and late at night when the marble is cool and the crowd thins. From the upper floors and the roof you see the whole ring of tawaf moving at once.</li>
+      <li><strong>Pick a spot facing the Multazam or the door</strong> after a prayer, and stay a while.</li>
+      <li><strong>Limit photos.</strong> Take a few, then put the phone away. The image you keep in your heart matters more than the one in your camera roll.</li>
+      <li><strong>Think of everyone who faces it.</strong> At every moment, somewhere in the world, people are praying toward this exact spot. Make du'a for them, and for the people back home who asked you to remember them.</li>
+      <li><strong>Return to it on your last day.</strong> Look at it once more before your farewell tawaf, and ask Allah to bring you back.</li>
+    </ul>
+    <div class="live-it"><h5>When you're there</h5><ul>
+      <li>First sight: stop, raise your hands, ask before anything else.</li>
+      <li>During tawaf: remember the angels circling al-Bayt al-Ma'mur above you.</li>
+      <li>In the crowd: the believer next to you is more sacred than the wall.</li>
+      <li>Afterward: sit and simply look, as worship.</li>
+    </ul></div>` };
+
+const MORE = [
+  { title:'The Year of the Elephant', text:"Abraha, the Abyssinian governor of Yemen, marched on Makkah with an elephant to destroy the Kaaba. Abdul-Muttalib asked him only for his camels back: he owned the camels, and the House had its own Lord to protect it. Flocks of birds pelted the army with stones of baked clay (Surah al-Fil). The Prophet ﷺ was born that same year.", where:'Recite Surah al-Fil while looking at the Kaaba.' },
+  { title:'Hudaybiyyah and the origin of ramal', text:"In 6 AH the Prophet ﷺ set out with about 1,400 companions to perform umrah and was blocked at Hudaybiyyah. The treaty seemed humiliating, but the Qur'an called it a clear victory (Surah al-Fath). The next year they returned for 'Umrat al-Qada. The Quraysh had said Madinah's fever had weakened them, so the men bared their right shoulders (idtiba') and walked briskly (ramal) in the first three circuits to show strength. The Prophet ﷺ performed four umrahs in his lifetime.", where:"You'll see the men around you doing this in tawaf. Women walk normally." },
+  { title:'Umar and the Black Stone', text:"Umar (RA) kissed the Black Stone and said he knew it was only a stone that could neither harm nor benefit, and that he would not have kissed it had he not seen the Prophet ﷺ do so (Bukhari). Every ritual is about following the Prophet ﷺ and obeying Allah, not the objects themselves.", where:'If the crowd is heavy, pointing from a distance is fully sunnah.' },
+  { title:'The Conquest of Makkah', text:"In 8 AH the man who had been driven out of Makkah returned with 10,000 companions, head bowed so low it nearly touched his saddle. He circled the Kaaba and knocked down its 360 idols, reciting \"Truth has come and falsehood has vanished\" (17:81). He told the Quraysh who had persecuted him that they were free to go. Bilal, once tortured on Makkah's sands, climbed the Kaaba and gave the adhan. The Prophet ﷺ returned the Kaaba's key to Uthman ibn Talha's family, the Banu Shaybah, who still hold it today.", where:'Every adhan you hear in the Haram echoes that first one from the Kaaba.' },
+  { title:'The weeping tree trunk', text:"The Prophet ﷺ used to deliver sermons leaning against a palm trunk. When a wooden minbar was built, the trunk cried out like a child until he came down and embraced it (Bukhari). He ﷺ said the area between his house and his minbar is a garden from the gardens of Paradise.", where:'The pillar al-Hannanah marks the spot, by the Rawdah.' },
+  { title:'The change of qibla', text:"For about 16 to 17 months in Madinah, Muslims prayed toward Jerusalem. During a prayer, revelation came commanding them to turn toward the Kaaba (2:144), and the congregation turned mid-prayer.", where:'Masjid al-Qiblatayn, "the mosque of the two qiblas," in Madinah.' },
+  { title:'Uhud', text:"At Uhud, the archers left their post on a small hill against orders, and the battle turned. Hamza, the Prophet's beloved uncle, was martyred, and the Prophet ﷺ was wounded. The lessons are obedience, and the cost of chasing worldly gain. He ﷺ said of the mountain: Uhud loves us and we love it.", where:"Stand on the Archers' Hill and greet the martyrs, including Hamza." },
+  { title:"Al-Baqi'", text:"This cemetery beside Masjid an-Nabawi holds thousands of companions, many of the Prophet's family, and Uthman (RA). The Prophet ﷺ would visit it at night to make du'a for its people.", where:"Beside Masjid an-Nabawi." },
+  { title:'The Farewell Hajj', text:"At Arafah, months before his death, the Prophet ﷺ declared the sanctity of life, wealth and honor, the equality of all people regardless of race, the rights of women, and the abolition of usury and blood feuds. He asked whether he had conveyed the message; when they said yes, he called on Allah to bear witness.", where:"Not part of Umrah, but it's the best summary of what this land stands for." },
+];
+
+const TAKEAWAYS = [
+  "During sa'ee, think of Hajar and her trust in Allah, and bring your own worries with you.",
+  "Drinking Zamzam is a moment for intention and du'a.",
+  "Behind the Maqam, remember Ibrahim building and asking for acceptance.",
+  "In Madinah, make wudu at the hotel before going to Quba.",
+];
+
 const STEPS = [
   { id:'i1', section:'ihram',
     text:'Take a full bath (ghusl) with the intention of Ihram.',
     note:'If unable, wudu is sufficient.',
-    detail:{ tips:['Trim nails and remove unwanted hair now — not allowed once in Ihram.','Apply perfume before Ihram only — not after.'] }
+    detail:{ tips:['Trim nails and remove unwanted hair now — not allowed once in Ihram.','You may put perfume on your body before Ihram, but not on your clothes. If the scent lingers afterward, that is fine.'] }
   },
   { id:'i2', section:'ihram',
     text:"Dress modestly. Your regular abaya and hijab are your Ihram — no special garment for women.",
-    note:'Cover everything except face and hands. Do not cover your face with a niqab while in Ihram.',
-    detail:{ tips:['Do not cut or trim hair or nails while in Ihram.','Do not apply perfume or scented products.','Do not cover your face, even in a crowd.','Avoid intimacy with your husband.','All restrictions lift once you trim your hair at the end.'] }
+    note:'Cover everything except your face and hands. In the Hanafi school, socks and gloves are allowed. Do not let any cloth touch your face while in Ihram.',
+    detail:{ tips:['Do not cut or trim hair or nails while in Ihram.','Do not apply perfume or scented products, including scented soap, lotion or wipes.','Your face must not be covered by anything that touches it. To screen your face from men, Hanafi scholars recommend something held away from the skin, such as a visor-style cap under the hijab with a cloth hanging over the brim.','Stitched clothing, shoes, socks and gloves are all fine for women.','Avoid intimacy with your husband.','All restrictions lift once you trim your hair at the end.'] }
   },
   { id:'i3', section:'ihram',
     text:"Pray 2 rak'ahs with the intention of Ihram, if it is not a disliked time.",
-    note:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd."
+    note:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.",
+    detail:{ tips:['This prayer is sunnah in the Hanafi school, not required.','Disliked times: from Fajr until about 15 minutes after sunrise, from Asr until sunset, and the few minutes when the sun is at its peak. At those times, skip the prayer and go straight to your intention.'] }
   },
   { id:'i4', section:'ihram',
-    text:'At the Miqat — or just before the plane crosses it — make your intention for Umrah:',
-    dua:{ arabic:'لَبَّيْكَ اللّٰهُمَّ عُمْرَةً', roman:"Labbayk Allāhumma 'umratan", meaning:'Here I am, O Allah, for Umrah.' },
+    text:'At the Miqat — or just before the plane crosses it — make your intention for Umrah, then say the Talbiyah straight away (next step).',
+    dua:{ arabic:'اللّٰهُمَّ إِنِّي أُرِيدُ الْعُمْرَةَ فَيَسِّرْهَا لِي وَتَقَبَّلْهَا مِنِّي', roman:"Allāhumma innī urīdul-'umrata fa-yassirhā lī wa taqabbalhā minnī", meaning:'O Allah, I intend Umrah, so make it easy for me and accept it from me.' },
+    note:'In the Hanafi school, you enter Ihram only when the intention is joined with the Talbiyah. The intention alone is not enough.',
     detail:{ tips:['The Miqat are fixed boundaries set by the Prophet ﷺ. No one intending Umrah may cross without entering Ihram.','If flying, the airline or group leader will announce when you are approaching the Miqat.'] }
   },
   { id:'i5', section:'ihram',
-    text:'Begin reciting the Talbiyah quietly. Keep repeating it until Tawaf begins.',
+    text:'Say the Talbiyah right after your intention. Saying it at least once is required to enter Ihram. Women say it quietly. Keep repeating it often until you begin Tawaf.',
     dua:{ arabic:'لَبَّيْكَ اللّٰهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ', roman:'Labbayk Allāhumma labbayk. Labbayk lā sharīka laka labbayk. Innal-ḥamda wan-niʿmata laka wal-mulk. Lā sharīka lak.', meaning:'Here I am, O Allah, here I am. You have no partner. All praise, grace, and sovereignty belong to You. You have no partner.' },
-    detail:{ history:"The Talbiyah is the pilgrim's call. You are answering Allah's invitation, just as Ibrahim (AS) once called all of humanity to this House and they answered across time." }
+    detail:{ history:"The Talbiyah is the pilgrim's call. You are answering Allah's invitation, just as Ibrahim (AS) once called all of humanity to this House and they answered across time." },
+    story:'ibrahim'
   },
   { id:'t1', section:'tawaf',
     text:'Make sure you have wudu. Enter Masjid Al-Haram with your right foot and say:',
+    note:'In the Hanafi school, wudu is wajib for Tawaf. A Tawaf done without it carries a penalty unless it is repeated with wudu.',
     dua:{ arabic:'اللّٰهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ', roman:'Allāhummaf-taḥ lī abwāba raḥmatik', meaning:'O Allah, open for me the gates of Your mercy.' }
   },
   { id:'t2', section:'tawaf',
     text:"When the Ka'bah comes into view for the first time — stop. Raise your hands and make dua. This is one of the most powerful moments of the entire Umrah.",
     note:"No fixed dua here. Scholars say dua is accepted at first sight of the Ka'bah. Speak freely — for yourself, your husband, your children, your parents. Take your time.",
-    detail:{ history:"This is the House of Allah — the direction every Muslim on earth faces five times a day. Seeing it for the first time is a gift very few people receive. Before anything else, ask." }
+    detail:{ history:"This is the House of Allah — the direction every Muslim on earth faces five times a day. Seeing it for the first time is a gift very few people receive. Before anything else, ask.", tips:['Above it, in the seventh heaven, 70,000 angels a day worship at al-Bayt al-Ma\'mur. Your tawaf mirrors theirs.','Don\'t reach for your phone first. Make the du\'a, then take a photo if you like.','See "Looking at the Ka\'bah" at the top of the Pre-read tab for more to reflect on.'] }
   },
   { id:'t3', section:'tawaf',
     text:"Walk to the Black Stone corner (Hajar Al-Aswad). Make your niyyah in your heart: 'I intend to perform Tawaf of the Ka'bah for Umrah.'",
-    note:'The Black Stone is set into the Ka\'bah at shoulder height, usually marked by a green light on the wall above.',
-    detail:{ history:'The Black Stone marks where each circuit begins and ends. The Prophet ﷺ kissed it. It is not worshipped — it is a marker and a physical connection to the time of Ibrahim (AS).' }
+    note:'Stand slightly to the right of the Black Stone (on the Yemeni Corner side), so your whole body passes it as you begin. A green light on the wall opposite marks its line.',
+    detail:{ history:'The Black Stone marks where each circuit begins and ends. The Prophet ﷺ kissed it. It is not worshipped — it is a marker and a physical connection to the time of Ibrahim (AS).' },
+    story:'makkan'
   },
   { id:'t4', section:'tawaf',
-    text:'Stop reciting the Talbiyah now. Face the Black Stone, point toward it with your right hand, and say the dua to begin circuit 1.',
-    dua:{ arabic:'بِسْمِ اللّٰهِ، اللّٰهُ أَكْبَرُ', roman:'Bismillāhi Allāhu Akbar', meaning:'In the name of Allah, Allah is the Greatest.' },
+    text:'Stop reciting the Talbiyah now. Face the Black Stone and raise both hands to your ears, palms facing it, as in the opening takbir of prayer, and say the dua. Then lower your hands, point both palms toward the Stone, and kiss your palms. This begins circuit 1.',
+    dua:{ arabic:'بِسْمِ اللّٰهِ، اللّٰهُ أَكْبَرُ، وَلِلّٰهِ الْحَمْدُ', roman:'Bismillāhi Allāhu Akbar, wa lillāhil-ḥamd', meaning:'In the name of Allah, Allah is the Greatest, and all praise is for Allah.' },
     note:'Kiss or touch the Black Stone only if you can reach it without pushing. If crowded, pointing from where you stand is perfectly valid.'
   },
   { id:'t5', section:'tawaf', isCounter:true, counterKey:'tawaf',
-    text:"Walk counter-clockwise, Ka'bah on your LEFT.\n\n● Yemeni Corner (last corner before the Black Stone): touch with your right hand if possible — no dua. If crowded, walk past.\n\n● Between the Yemeni Corner and the Black Stone: recite the dua below — every circuit, all 7 times.\n\n● Back at the Black Stone = 1 circuit done. Point toward it, say Bismillāhi Allāhu Akbar, and tap the counter.",
-    dua:{ arabic:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', roman:"Rabbanā ātinā fid-dunyā ḥasanatan wa fil-ākhirati ḥasanatan wa qinā 'adhāban-nār", meaning:'Our Lord, give us good in this world, good in the Hereafter, and protect us from the Fire.' },
+    text:"Walk counter-clockwise, Ka'bah on your LEFT.\n\n● Yemeni Corner (last corner before the Black Stone): touch with your right hand if possible — no dua. If crowded, walk past.\n\n● Between the Yemeni Corner and the Black Stone: recite the dua below — every circuit, all 7 times.\n\n● Back at the Black Stone = 1 circuit done. Face it, point your palms toward it, say Bismillāhi Allāhu Akbar, kiss your palms (no need to raise them to your ears again), and tap the counter.",
+    dua:{ arabic:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', roman:'Rabbanā ātinā fid-dunyā ḥasanatan wa fil-ākhirati ḥasanatan wa qinā \'adhāban-nār', meaning:'Our Lord, give us good in this world, good in the Hereafter, and protect us from the Fire.' },
     note:'For the rest of each circuit, no fixed dua — speak to Allah freely in any language. If you lose count, take the lower number you are sure of.',
-    detail:{ tips:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall and a line on the floor mark the Black Stone level.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','Stay calm and move with the flow of people.'] }
+    detail:{ tips:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot.','Stay calm and move with the flow of people.'] }
   },
   { id:'t6', section:'tawaf',
-    text:'After all 7 circuits, pray 2 rak\'ahs near Maqam Ibrahim. If you cannot get close, anywhere in the Masjid is fine.',
-    note:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.",
-    detail:{ history:"Maqam Ibrahim is the stone on which Ibrahim (AS) stood while building the Ka'bah. Allah commanded: 'Take the station of Ibrahim as a place of prayer.' (Quran 2:125)" }
+    text:'After all 7 circuits, pray 2 rak\'ahs near Maqam Ibrahim. If you cannot get close, anywhere in the Masjid is fine. In the Hanafi school these 2 rak\'ahs are wajib.',
+    notes:["Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.","Don't pray them in a disliked time. If you finish Tawaf after Fajr time has begun, pray them after sunrise (about 15 minutes after); if after Asr, pray them after Maghrib. Your plan finishes Tawaf before Fajr, so you should be fine."],
+    detail:{ history:"Maqam Ibrahim is the stone on which Ibrahim (AS) stood while building the Ka'bah. Allah commanded: 'Take the station of Ibrahim as a place of prayer.' (Quran 2:125)" },
+    story:'ibrahim'
   },
   { id:'t7', section:'tawaf',
-    text:'Drink Zamzam water. Face the Qiblah and drink in 3 sips. Before you drink, make dua — the Prophet ﷺ said Zamzam is for whatever it is drunk for. You may recite this dua, then ask Allah for whatever is in your heart:',
+    text:'Drink Zamzam water. Face the Qiblah, standing, and drink in 3 sips, pausing to breathe between them. Before you drink, make dua — the Prophet ﷺ said Zamzam is for whatever it is drunk for. You may recite this dua, then ask Allah for whatever is in your heart:',
     dua:{ arabic:'اللّٰهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ', roman:"Allāhumma innī as'aluka 'ilman nāfi'an wa rizqan wāsi'an wa shifā'an min kulli dā'", meaning:'O Allah, I ask You for beneficial knowledge, abundant provision, and cure from every illness.' },
     note:'After this dua, ask for anything on your heart — your children, your family, your health, your deen. The personal dua here is what matters most.',
-    detail:{ history:"Zamzam has flowed continuously since Allah caused it to spring from the earth for baby Ismail (AS) when his mother Hajar desperately searched for water. It has never dried up in thousands of years. The Prophet ﷺ said: 'The best water on the face of the earth is Zamzam.' (Tabarani)" }
+    detail:{ history:"Zamzam has flowed continuously since Allah caused it to spring from the earth for baby Ismail (AS) when his mother Hajar desperately searched for water. It has never dried up in thousands of years. The Prophet ﷺ said: 'The best water on the face of the earth is Zamzam.' (Tabarani)", tips:['Before heading to Safa, it is sunnah to go back to the Black Stone line and point your palms toward it once more, if it is easy.'] },
+    story:'ibrahim'
   },
   { id:'s1', section:'saee',
     text:'Walk toward the Safa hill inside the Mas\'aa gallery. As you approach Safa for the first time, recite this verse — once only:',
     dua:{ arabic:'إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللّٰهِ', roman:"Innaṣ-ṣafā wal-marwata min sha'ā'irillāh", meaning:'Indeed Safa and Marwa are among the rites of Allah. (Quran 2:158)' },
     note:'Recite this only the first time approaching Safa — not on return laps.',
-    detail:{ history:"When the Prophet ﷺ approached Safa he recited this verse then said: 'We begin with what Allah began with.' (Sahih Muslim)" }
+    detail:{ history:"When the Prophet ﷺ approached Safa he recited this verse then said: 'We begin with what Allah began with.' (Sahih Muslim)" },
+    story:'makkan'
   },
   { id:'s2', section:'saee',
     text:'Climb Safa. Face the Ka\'bah direction, raise your hands, and recite this dua 3 times. Between each repetition, lower your hands and make personal dua silently.',
-    dua:{ arabic:'اللّٰهُ أَكْبَرُ، اللّٰهُ أَكْبَرُ، اللّٰهُ أَكْبَرُ — لَا إِلَٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. لَا إِلَٰهَ إِلَّا اللّٰهُ وَحْدَهُ، أَنجَزَ وَعْدَهُ وَنَصَرَ عَبْدَهُ وَهَزَمَ الْأَحْزَابَ وَحْدَهُ', roman:"Allāhu Akbar, Allāhu Akbar, Allāhu Akbar — Lā ilāha illallāhu waḥdahu lā sharīka lah, lahul-mulku wa lahul-ḥamdu wa huwa 'alā kulli shay'in qadīr. Lā ilāha illallāhu waḥdah, anjaza wa'dahu wa naṣara 'abdahu wa hazamal-aḥzāba waḥdah.", meaning:'Allah is the Greatest (×3). There is no god but Allah alone, no partner has He. To Him belongs the kingdom and all praise, and He has power over all things. There is no god but Allah alone — He fulfilled His promise, gave victory to His servant, and defeated the confederates alone.' },
+    dua:{ arabic:'اللّٰهُ أَكْبَرُ، اللّٰهُ أَكْبَرُ، اللّٰهُ أَكْبَرُ — لَا إِلَٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. لَا إِلَٰهَ إِلَّا اللّٰهُ وَحْدَهُ، أَنجَزَ وَعْدَهُ وَنَصَرَ عَبْدَهُ وَهَزَمَ الْأَحْزَابَ وَحْدَهُ', roman:'Allāhu Akbar, Allāhu Akbar, Allāhu Akbar — Lā ilāha illallāhu waḥdahu lā sharīka lah, lahul-mulku wa lahul-ḥamdu wa huwa \'alā kulli shay\'in qadīr. Lā ilāha illallāhu waḥdah, anjaza wa\'dahu wa naṣara \'abdahu wa hazamal-aḥzāba waḥdah.', meaning:'Allah is the Greatest (×3). There is no god but Allah alone, no partner has He. To Him belongs the kingdom and all praise, and He has power over all things. There is no god but Allah alone — He fulfilled His promise, gave victory to His servant, and defeated the confederates alone.' },
     note:'Sequence: dua → personal dua → dua → personal dua → dua (3 times total). Repeat this same dua at Marwa on every lap. Take your time — this is a major dua opportunity.',
     detail:{ history:'This is the exact dua the Prophet ﷺ made on Safa, narrated in Sahih Muslim (1218). He began with Allahu Akbar three times, said the dhikr, then made personal dua between each repetition. You are retracing his footsteps.' }
   },
   { id:'s3', section:'saee', isCounter:true, counterKey:'saee',
     text:"Walk from Safa to Marwa — lap 1. Walk at your own pace the entire way.\n\nAt Marwa: climb, face the Ka'bah, and repeat the same dua 3 times with personal dua in between.\n\nWalk back to Safa — lap 2. Continue until lap 7, which ends on Marwa.",
     notes:['Safa → Marwa = lap 1. Marwa → Safa = lap 2. You finish on Marwa at lap 7.','Tap the counter each time you arrive at a hill after walking — not at Safa at the very start.'],
-    detail:{ history:"Sa'ee commemorates Hajar (AS), wife of Ibrahim (AS), who ran between these hills searching for water for her infant son Ismail. Her trust in Allah caused the Zamzam spring to burst from the earth. Every step honours her faith.", tips:["Between the hills: no fixed dua — make sincere personal dua the whole way.","Women walk at a normal pace the entire Sa'ee.","Men walk briskly between the two green lights on the walls."] }
+    detail:{ history:"Sa'ee commemorates Hajar (AS), wife of Ibrahim (AS), who ran between these hills searching for water for her infant son Ismail. Her trust in Allah caused the Zamzam spring to burst from the earth. Every step honours her faith.", tips:['In the Hanafi school, Sa\'ee is wajib rather than a pillar, and starting at Safa is required. All 7 laps must be done.','Wudu is recommended for Sa\'ee but not required.','If the congregational prayer starts, join it, then continue the lap from where you stopped.','Between the hills: no fixed dua — make sincere personal dua the whole way.','Women walk at a normal pace the entire Sa\'ee.','Men walk briskly between the two green lights on the walls.'] },
+    story:'ibrahim'
   },
   { id:'c1', section:'completion',
-    text:"Trim a fingertip's length from the ends of your hair. This can be done under your hijab — it does not need to be visible.",
-    note:'Shaving is for men only. Women trim. Once done, all Ihram restrictions are lifted.',
-    detail:{ tips:['You or your husband can trim a small section from the ends.','Even a few strands from around the hairline is sufficient.'] }
+    text:"Trim about a fingertip's length (roughly 1 inch / 2.5 cm) from the ends of at least a quarter of your hair. Trimming from all of it is better. This can be done under your hijab — it does not need to be visible.",
+    note:'In the Hanafi school, the trim is wajib and must be done inside the Haram boundary. Your Makkah hotel counts. Once done, all Ihram restrictions are lifted.',
+    detail:{ tips:['A few strands from the hairline is not enough in the Hanafi school. An easy way: gather all your hair (or a braid) together and cut the ends.','You can trim your own hair once Sa\'ee is done, or your husband can do it after he has finished his own.','Shaving is for men only. Women always trim.'] }
   },
   { id:'c2', section:'completion',
     text:'Your Umrah is complete 🤍. Ask Allah to accept it:',
     dua:{ arabic:'اللّٰهُمَّ تَقَبَّلْ مِنِّي إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ', roman:"Allāhumma taqabbal minnī innaka antas-samī'ul-'alīm", meaning:'O Allah, accept from me. Indeed You are the All-Hearing, All-Knowing.' },
-    note:"You may also say مِنَّا (minnā — 'from us') to include your husband and family."
+    note:"You may also say مِنَّا (minnā — 'from us') to include your husband and family. It echoes the du'a Ibrahim and Ismail made while building the Ka'bah.",
+    story:'ibrahim'
   },
 ];
 
 // ── State ─────────────────────────────────────────────────────────────────────
-let activeSection = 'ihram';
+let activeSection = 'preread';
+let openStory = null;
 const checked  = {};
 const counters = { tawaf: 0, saee: 0 };
+let readStories = {};
+try { readStories = JSON.parse(localStorage.getItem('umrah-preread') || '{}') || {}; } catch (e) { readStories = {}; }
+try { const t = localStorage.getItem('umrah-tab'); if (t && SECTIONS.some(s => s.key === t)) activeSection = t; } catch (e) {}
+function saveRead() { try { localStorage.setItem('umrah-preread', JSON.stringify(readStories)); } catch (e) {} }
+function saveTab() { try { localStorage.setItem('umrah-tab', activeSection); } catch (e) {} }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function sectionDone(key) {
+  if (key === 'preread') return STORIES.every(s => readStories[s.id]);
   return STEPS.filter(s => s.section === key).every(s =>
     s.isCounter ? counters[s.counterKey] >= 7 : !!checked[s.id]
   );
@@ -306,11 +550,13 @@ function globalStepNum(id) {
   return checkable.findIndex(s => s.id === id) + 1;
 }
 
+function goTo(key) { activeSection = key; saveTab(); render(); window.scrollTo(0,0); }
+
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
   renderTabs();
   renderSectionHeading();
-  renderSteps();
+  if (activeSection === 'preread') renderPreread(); else renderSteps();
   renderProgress();
 }
 
@@ -326,20 +572,114 @@ function renderTabs() {
   SECTIONS.forEach(sec => {
     const done = sectionDone(sec.key);
     const btn = document.createElement('button');
-    btn.className = 'tab' + (sec.key === activeSection ? ' active' : '');
+    btn.className = 'tab' + (sec.key === 'preread' ? ' pre' : '') + (sec.key === activeSection ? ' active' : '');
     btn.innerHTML = `<span>${done ? '✅' : sec.emoji}</span><span>${sec.label}</span>`;
-    btn.onclick = () => { activeSection = sec.key; render(); window.scrollTo(0,0); };
+    btn.onclick = () => goTo(sec.key);
     el.appendChild(btn);
   });
 }
 
 function renderSectionHeading() {
   const sec = SECTIONS.find(s => s.key === activeSection);
-  const visible = STEPS.filter(s => s.section === activeSection);
-  const doneCt = visible.filter(s => s.isCounter ? counters[s.counterKey] >= 7 : !!checked[s.id]).length;
   document.getElementById('section-title').textContent = sec.emoji + '  ' + sec.label;
   document.getElementById('section-sub').textContent = sec.sub;
+  if (activeSection === 'preread') {
+    const n = STORIES.filter(s => readStories[s.id]).length;
+    document.getElementById('section-count').textContent = n + ' / ' + STORIES.length + ' read';
+    return;
+  }
+  const visible = STEPS.filter(s => s.section === activeSection);
+  const doneCt = visible.filter(s => s.isCounter ? counters[s.counterKey] >= 7 : !!checked[step.id]).length;
   document.getElementById('section-count').textContent = doneCt + ' / ' + visible.length + ' done';
+}
+
+function renderPreread() {
+  const c = document.getElementById('steps');
+  c.innerHTML = '';
+
+  const intro = document.createElement('p');
+  intro.className = 'pre-intro';
+  intro.textContent = "Read these before you fly. Each rite of Umrah retraces something that happened in these places, and knowing the story turns the steps into memories.";
+  c.appendChild(intro);
+
+  const g0 = document.createElement('p');
+  g0.className = 'group-label';
+  g0.textContent = 'Before you see the Ka\'bah';
+  c.appendChild(g0);
+
+  const k = document.createElement('details');
+  k.className = 'story kaaba';
+  k.id = 'story-kaaba';
+  if (openStory === 'kaaba') k.open = true;
+  k.innerHTML = `
+    <summary>
+      <span class="story-num">🕋</span>
+      <span class="story-head"><p class="story-title">${KAABA.title}</p><p class="story-meta">${KAABA.meta}</p></span>
+      <span class="story-chev">▸</span>
+    </summary>
+    <div class="story-body">${KAABA.body}</div>`;
+  k.addEventListener('toggle', () => { openStory = k.open ? 'kaaba' : (openStory === 'kaaba' ? null : openStory); });
+  c.appendChild(k);
+
+  const g1 = document.createElement('p');
+  g1.className = 'group-label';
+  g1.textContent = 'Focus stories';
+  c.appendChild(g1);
+
+  STORIES.forEach((s, i) => {
+    const d = document.createElement('details');
+    d.className = 'story' + (readStories[s.id] ? ' read' : '');
+    d.id = 'story-' + s.id;
+    if (openStory === s.id) d.open = true;
+    d.innerHTML = `
+      <summary>
+        <span class="story-num">${readStories[s.id] ? '✓' : i + 1}</span>
+        <span class="story-head"><p class="story-title">${s.title}</p><p class="story-meta">${s.meta}</p></span>
+        <span class="story-chev">▸</span>
+      </summary>
+      <div class="story-body">${s.body}</div>`;
+    d.addEventListener('toggle', () => { openStory = d.open ? s.id : (openStory === s.id ? null : openStory); });
+    const btn = document.createElement('button');
+    btn.className = 'mark-btn read-btn' + (readStories[s.id] ? ' done' : '');
+    btn.textContent = readStories[s.id] ? '✓ Read — tap to undo' : 'Mark as read';
+    btn.onclick = () => {
+      readStories[s.id] = !readStories[s.id]; saveRead();
+      openStory = readStories[s.id] ? null : s.id;
+      render();
+      const el = document.getElementById('story-' + s.id);
+      if (el) el.scrollIntoView({ block: 'start' });
+    };
+    d.querySelector('.story-body').appendChild(btn);
+    c.appendChild(d);
+  });
+
+  const g2 = document.createElement('p');
+  g2.className = 'group-label';
+  g2.textContent = 'More stories for the journey';
+  c.appendChild(g2);
+
+  MORE.forEach(m => {
+    const d = document.createElement('details');
+    d.className = 'story';
+    d.innerHTML = `
+      <summary>
+        <span class="story-head"><p class="story-title">${m.title}</p></span>
+        <span class="story-chev">▸</span>
+      </summary>
+      <div class="short"><p>${m.text}</p><p class="where">📍 ${m.where}</p></div>`;
+    c.appendChild(d);
+  });
+
+  const t = document.createElement('div');
+  t.className = 'takeaways';
+  t.innerHTML = `<h3>Carry these with you</h3><ul>${TAKEAWAYS.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  c.appendChild(t);
+
+  const next = document.createElement('button');
+  next.className = 'next-btn ready';
+  next.textContent = 'Begin: 🌿 Ihram →';
+  next.onclick = () => goTo('ihram');
+  c.appendChild(next);
 }
 
 function renderSteps() {
@@ -355,7 +695,6 @@ function renderSteps() {
     const div = document.createElement('div');
     div.className = 'step' + (isDone ? ' done' : '');
 
-    // Circle
     const circle = document.createElement('div');
     if (step.isCounter) {
       circle.className = 'circle counter-circle' + (isDone ? ' counter-done' : '');
@@ -368,30 +707,20 @@ function renderSteps() {
     }
     div.appendChild(circle);
 
-    // Content
     const content = document.createElement('div');
     content.className = 'step-content';
 
-    // Text
     const p = document.createElement('p');
     p.className = 'step-text';
     p.textContent = step.text;
     content.appendChild(p);
 
-    // Note(s)
     if (step.note) content.appendChild(makeNote(step.note));
     if (step.notes) step.notes.forEach(n => content.appendChild(makeNote(n)));
-
-    // Dua
     if (step.dua) content.appendChild(makeDua(step.dua));
-
-    // Counter widget
     if (step.isCounter) content.appendChild(makeCounter(step));
-
-    // Learn more
     if (step.detail) content.appendChild(makeLearnMore(step.detail));
 
-    // Mark done button
     if (!step.isCounter) {
       const btn = document.createElement('button');
       btn.className = 'mark-btn' + (isDone ? ' done' : '');
@@ -404,18 +733,16 @@ function renderSteps() {
     container.appendChild(div);
   });
 
-  // Next section button
   if (sectionIdx < SECTIONS.length - 1) {
     const next = SECTIONS[sectionIdx + 1];
     const btn = document.createElement('button');
     const ready = sectionDone(activeSection);
     btn.className = 'next-btn' + (ready ? ' ready' : '');
     btn.textContent = (ready ? 'Next: ' : 'Skip to ') + next.emoji + ' ' + next.label + ' →';
-    btn.onclick = () => { activeSection = next.key; render(); window.scrollTo(0,0); };
+    btn.onclick = () => goTo(next.key);
     container.appendChild(btn);
   }
 
-  // Completion card
   const card = document.createElement('div');
   card.className = 'completion-card' + (allDone ? ' show' : '');
   card.innerHTML = `
@@ -449,7 +776,7 @@ function makeCounter(step) {
   const current = counters[key];
   const total = 7;
   const done = current >= total;
-  const label = key === 'tawaf' ? "Circuits around the Ka'bah" : 'Laps between Safa & Marwa';
+  const label = key === 'tawaf' ? 'Circuits around the Ka\'bah' : 'Laps between Safa & Marwa';
 
   const d = document.createElement('div');
   d.className = 'counter' + (done ? ' done' : '');
@@ -515,8 +842,7 @@ function makeLearnMore(detail) {
   return d;
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
 render();
 </script>
-</body>
-</html>
+
+</body></html>
