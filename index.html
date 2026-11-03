@@ -38,7 +38,13 @@ button{ font:inherit; color:inherit; }
 .wrap{ max-width:520px; margin:0 auto; }
 
 /* Header */
-.top{ position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:var(--header); color:var(--header-ink); }
+.top{ position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:var(--header); color:var(--header-ink); transition:transform .28s ease, box-shadow .28s ease; }
+/* Scrolling down slides the header up so only the progress strip stays visible; scrolling up brings it back. */
+.top.collapsed{ transform:translateY(calc(-1 * var(--collapse, 0px))); box-shadow:0 6px 18px rgba(0,0,0,.18); }
+.top .brand-row{ transition:opacity .2s ease; }
+.top.collapsed .brand-row{ opacity:0; pointer-events:none; }
+.prog .psec{ display:none; font-weight:700; opacity:1; min-width:0; text-align:left; white-space:nowrap; }
+.top.collapsed .prog .psec{ display:inline; }
 .top .wrap{ padding-block:14px 12px; display:grid; gap:12px; }
 .brand-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
 .brand{ display:flex; align-items:baseline; gap:10px; min-width:0; }
@@ -57,7 +63,7 @@ button{ font:inherit; color:inherit; }
 @media (min-width:431px){ .brand small{ white-space:nowrap; } }
 @media (max-width:400px){ .aa .lvl{ display:none; } .aa{ padding:0 8px; } }
 .brand{ min-width:0; }
-.step{ scroll-margin-top:150px; }
+.step{ scroll-margin-top:72px; }
 .step.current .card{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), var(--shadow); }
 .step.current .node{ border-color:var(--accent); color:var(--accent); }
 .now-tag{ justify-self:start; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:800; color:var(--accent); background:var(--accent-soft); padding:3px 9px; border-radius:99px; }
@@ -175,7 +181,7 @@ details.more[open] summary svg{ transform:rotate(90deg); }
 .story-body{ padding:4px 16px 18px; border-top:1px solid var(--line); display:grid; gap:0; }
 .story-body h4{ margin:20px 0 6px; font-size:calc(15px * var(--zoom,1)); font-weight:800; color:var(--accent); letter-spacing:-.01em; }
 .story-body p{ margin:0 0 10px; font-size:calc(15px * var(--zoom,1)); line-height:1.75; }
-.story-body ul{ margin:0 0 10px; padding-left:18px; display:grid; gap:6px; }
+.story-body ul{ margin:0 0 10px; padding-left:18px; }
 .story-body li{ font-size:calc(15px * var(--zoom,1)); line-height:1.7; margin-bottom:6px; }
 .story-body li::marker{ color:var(--brass); }
 .story-body .src{ font-size:12.5px; color:var(--muted); }
@@ -224,6 +230,7 @@ details.more[open] summary svg{ transform:rotate(90deg); }
       </div>
     </div>
     <div class="prog" aria-label="Umrah progress">
+      <span class="psec" id="psec"></span>
       <div class="track"><div class="fill" id="fill"></div></div>
       <span id="pct">0% done</span>
     </div>
@@ -570,7 +577,7 @@ const ICON = {
   saee: svg('<path d="M4 8h14"/><path d="M15 5l3 3-3 3"/><path d="M20 16H6"/><path d="M9 13l-3 3 3 3"/>'),
   completion: svg('<circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5.5"/>'),
   check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'stroke-width="2.6"'),
-  info: svg('<circle cx="12" r="9"/><path d="M12 11v5"/><path d="M12 7.6v.1"/>', 'stroke-width="2"'),
+  info: svg('<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.6v.1"/>', 'stroke-width="2"'),
   chev: svg('<path d="M9 6l6 6-6 6"/>', 'class="chev" stroke-width="2.2"'),
   chevS: svg('<path d="M9 6l6 6-6 6"/>', 'stroke-width="2.4"'),
   arrow: svg('<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>', 'stroke-width="2"'),
@@ -666,6 +673,7 @@ function render() {
   const { pct } = totalProgress();
   document.getElementById('fill').style.width = pct + '%';
   document.getElementById('pct').textContent = pct + '% done';
+  document.getElementById('psec').textContent = SECTIONS.find(x => x.key === activeSection).label;
   renderTabs(); renderHeading();
   if (activeSection === 'preread') renderPreread(); else renderSteps();
   renderResume();
@@ -947,6 +955,23 @@ function renderPreread() {
 document.querySelectorAll('#gender button').forEach(b => {
   b.onclick = () => { if (gender !== b.dataset.g) { gender = b.dataset.g; store('sabrina-gender', gender); render(); } };
 });
+// Collapsing header: hide on scroll down, show on scroll up or near the top.
+(function () {
+  const top = document.querySelector('.top'), prog = top.querySelector('.prog');
+  const measure = () => top.style.setProperty('--collapse', Math.max(0, prog.offsetTop - 8) + 'px');
+  let lastY = window.scrollY, ticking = false;
+  const update = () => {
+    const y = window.scrollY;
+    if (y < 60) top.classList.remove('collapsed');
+    else if (y > lastY + 6) top.classList.add('collapsed');
+    else if (y < lastY - 6) top.classList.remove('collapsed');
+    if (Math.abs(y - lastY) > 6 || y < 60) lastY = y;
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', measure);
+  measure();
+})();
 document.getElementById('theme').onclick = () => { theme = theme === 'dark' ? 'light' : 'dark'; store('sabrina-theme', theme); render(); };
 document.getElementById('aa').onclick = () => { textSize = (textSize + 1) % SIZES.length; store('sabrina-size', String(textSize)); render(); };
 
