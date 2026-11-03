@@ -1,233 +1,246 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Sabrina's Umrah Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Umrah Guide">
-<meta name="theme-color" content="#1F5C5C">
+<meta name="apple-mobile-web-app-title" content="Sabrina's Umrah">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap">
 <style>
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html { color-scheme: light; }
-  body { margin: 0; font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #FAF8F4; color: #18282A; }
-  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: #1F5C5C; }
-  #app { max-width: 460px; margin: 0 auto; min-height: 100vh; padding-bottom: 40px; }
+/* Layout: one-handed phone app. Compact sticky header (name, gender switch, progress), a timeline of steps, and a fixed bottom tab bar for the five sections. */
+:root{
+  --bg:#F2F4F1; --surface:#FFFFFF; --surface-2:#F7F8F6; --ink:#12201F; --muted:#5D6B69; --faint:#8C9997; --line:#E1E6E2;
+  --accent:#0F5E59; --accent-ink:#FFFFFF; --accent-soft:#E2EFEC; --brass:#9A7428; --brass-soft:#F6EEDB; --brass-line:#E5D3A6;
+  --ok:#2E7D52; --ok-soft:#E3F2E9; --header:#0D3F3C; --header-ink:#F1F7F5;
+  --shadow:0 1px 2px rgba(18,32,31,.05), 0 4px 16px rgba(18,32,31,.06);
+  --ui:"Plus Jakarta Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --ar:"Amiri", "Noto Naskh Arabic", "Geeza Pro", serif;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0A1211; --surface:#121C1B; --surface-2:#172322; --ink:#E6EEEC; --muted:#95A5A2; --faint:#6E7F7C; --line:#22302E;
+  --accent:#5CC2B4; --accent-ink:#06201D; --accent-soft:#143330; --brass:#D9B66C; --brass-soft:#272114; --brass-line:#4A3D20;
+  --ok:#62CC93; --ok-soft:#14301F; --header:#0A1C1B; --header-ink:#E6EEEC;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.25); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0A1211; --surface:#121C1B; --surface-2:#172322; --ink:#E6EEEC; --muted:#95A5A2; --faint:#6E7F7C; --line:#22302E;
+  --accent:#5CC2B4; --accent-ink:#06201D; --accent-soft:#143330; --brass:#D9B66C; --brass-soft:#272114; --brass-line:#4A3D20;
+  --ok:#62CC93; --ok-soft:#14301F; --header:#0A1C1B; --header-ink:#E6EEEC;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.25); color-scheme:dark }
 
-  /* Header */
-  .header {
-    background: linear-gradient(160deg, #1F5C5C 0%, #163F3F 100%);
-    padding: 22px 18px 18px; color: #fff;
-    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-  }
-  .header-label { margin: 0 0 1px; font-size: 11px; opacity: 0.6; letter-spacing: 2.5px; text-transform: uppercase; }
-  .header-title { margin: 0 0 14px; font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--ui); font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:40; background:var(--header); }
+button{ font:inherit; color:inherit; }
+:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+.gutter{ padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); }
+.wrap{ max-width:520px; margin:0 auto; }
 
-  /* Progress */
-  .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-  .progress-track { flex: 1; height: 6px; background: rgba(255,255,255,0.18); border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, #B8943A, #E8C060); border-radius: 99px; transition: width 0.5s ease; }
-  .progress-label { font-size: 12px; opacity: 0.85; white-space: nowrap; font-weight: 600; }
+/* Header */
+.top{ position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:var(--header); color:var(--header-ink); }
+.top .wrap{ padding-block:14px 12px; display:grid; gap:12px; }
+.brand-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.brand{ display:flex; align-items:baseline; gap:10px; min-width:0; }
+.brand h1{ margin:0; font-size:21px; font-weight:800; letter-spacing:-.02em; }
+.brand .ar{ font-family:var(--ar); font-size:20px; opacity:.75; line-height:1; }
+.brand small{ display:block; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.6; font-weight:600; margin-top:2px; }
+.tools{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.aa{ height:34px; min-width:40px; border:0; border-radius:999px; background:rgba(255,255,255,.1); color:inherit; cursor:pointer; display:flex; align-items:baseline; justify-content:center; gap:1px; padding:0 10px; font-weight:800; line-height:34px; }
+.aa .s1{ font-size:11px; } .aa .s2{ font-size:15px; }
+.aa .lvl{ display:flex; gap:2px; align-self:center; margin-left:5px; }
+.aa .lvl i{ width:4px; height:4px; border-radius:50%; background:currentColor; opacity:.3; }
+.aa .lvl i.on{ opacity:1; }
+@media (max-width:430px){ .brand .ar{ display:none; } }
+.step{ scroll-margin-top:150px; }
+.step.current .card{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), var(--shadow); }
+.step.current .node{ border-color:var(--accent); color:var(--accent); }
+.now-tag{ justify-self:start; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:800; color:var(--accent); background:var(--accent-soft); padding:3px 9px; border-radius:99px; }
+.resume{ width:100%; margin-top:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 16px; border:0; border-radius:14px; background:var(--accent); color:var(--accent-ink); cursor:pointer; text-align:left; box-shadow:var(--shadow); }
+.resume small{ display:block; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.75; font-weight:700; }
+.resume b{ font-size:15px; }
+.resume svg{ width:20px; height:20px; flex-shrink:0; }
+.reset-row{ margin-top:28px; display:grid; gap:8px; justify-items:center; text-align:center; }
+.reset-row p{ margin:0; font-size:13px; color:var(--muted); max-width:40ch; }
+.btn.danger{ background:transparent; color:#B4452F; border-color:#E2B4A8; }
+.saved{ margin:10px 0 0; font-size:12px; color:var(--faint); text-align:center; }
+.seg{ display:flex; background:rgba(255,255,255,.1); border-radius:999px; padding:3px; flex-shrink:0; }
+.seg button{ border:0; background:none; color:inherit; font-size:12.5px; font-weight:600; padding:6px 13px; border-radius:999px; cursor:pointer; opacity:.75; transition:background .2s, color .2s; }
+.seg button[aria-pressed="true"]{ background:var(--header-ink); color:var(--header); opacity:1; }
+.prog{ display:flex; align-items:center; gap:10px; font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
+.prog .track{ flex:1; height:4px; border-radius:99px; background:rgba(255,255,255,.14); overflow:hidden; }
+.prog .fill{ height:100%; width:0; background:linear-gradient(90deg, #C9A04A, #EFD08A); border-radius:99px; transition:width .45s ease; }
+.prog span{ opacity:.8; min-width:7ch; text-align:right; }
 
-  /* Tabs */
-  .tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab {
-    flex-shrink: 0; padding: 7px 14px; border-radius: 99px;
-    font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px;
-    transition: all 0.2s; border: 1px solid rgba(255,255,255,0.25);
-    background: rgba(255,255,255,0.1); color: #fff; font-weight: 500;
-  }
-  .tab.active { background: #fff; color: #1F5C5C; font-weight: 700; border: none; }
-  .tab.pre { border-style: dashed; }
-  .tab.pre.active { border: none; }
+/* Section heading */
+main{ padding-bottom:calc(96px + env(safe-area-inset-bottom,0px)); }
+.heading{ padding-block:24px 6px; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; }
+.eyebrow{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--brass); font-weight:700; margin:0 0 4px; }
+.heading h2{ margin:0; font-size:28px; line-height:1.15; font-weight:800; letter-spacing:-.025em; text-wrap:balance; }
+.heading p.sub{ margin:4px 0 0; color:var(--muted); font-size:14px; }
+.pill{ flex-shrink:0; font-size:12px; font-weight:700; padding:5px 10px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.pill.ok{ background:var(--ok-soft); color:var(--ok); }
 
-  /* Section heading */
-  .section-heading { padding: 20px 18px 4px; }
-  .section-heading-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-  .section-title { margin: 0 0 2px; font-size: 20px; font-weight: 800; color: #18282A; }
-  .section-sub { margin: 0; font-size: 13px; color: #5A7070; }
-  .section-count { font-size: 13px; color: #5A7070; font-weight: 600; white-space: nowrap; }
-  .divider { height: 1px; background: #E2DAD0; margin-top: 14px; }
+/* Timeline */
+.timeline{ list-style:none; margin:16px 0 0; padding:0; }
+.step{ display:grid; grid-template-columns:36px 1fr; gap:14px; position:relative; padding-bottom:22px; }
+.step::before{ content:""; position:absolute; left:17px; top:40px; bottom:4px; width:2px; background:var(--line); border-radius:2px; }
+.step:last-child::before{ display:none; }
+.node{ width:36px; height:36px; border-radius:50%; border:2px solid var(--line); background:var(--surface); display:grid; place-items:center; font-size:13px; font-weight:800; color:var(--muted); cursor:pointer; padding:0; transition:all .2s; font-variant-numeric:tabular-nums; }
+.node svg{ width:16px; height:16px; }
+.node.count{ border-color:var(--accent-soft); background:var(--accent-soft); color:var(--accent); cursor:default; }
+.step.done .node{ background:var(--ok); border-color:var(--ok); color:#fff; }
+.card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:16px; box-shadow:var(--shadow); min-width:0; display:grid; gap:12px; transition:opacity .2s; }
+.step.done .card{ opacity:.55; box-shadow:none; }
+.step-text{ margin:0; font-size:calc(16px * var(--zoom,1)); line-height:1.7; white-space:pre-line; font-weight:500; }
+.note{ display:flex; gap:10px; align-items:flex-start; background:var(--surface-2); border-radius:12px; padding:10px 12px; }
+.note svg{ flex-shrink:0; width:16px; height:16px; color:var(--brass); margin-top:3px; }
+.note p{ margin:0; font-size:calc(14px * var(--zoom,1)); line-height:1.6; color:var(--ink); }
 
-  /* Steps */
-  .steps { padding: 4px 18px 32px; }
-  .step { padding: 18px 0; border-bottom: 1px solid #E2DAD0; display: flex; gap: 14px; align-items: flex-start; }
-  .step.done { opacity: 0.4; }
+/* Dua */
+.dua-box{ background:var(--brass-soft); border:1px solid var(--brass-line); border-radius:14px; padding:16px; display:grid; gap:8px; }
+.dua-arabic{ font-family:var(--ar); font-size:calc(24px * var(--zoom,1)); line-height:2; text-align:right; direction:rtl; margin:0; color:var(--ink); }
+.dua-roman{ margin:0; font-size:calc(14px * var(--zoom,1)); font-style:italic; color:var(--brass); line-height:1.6; }
+.dua-meaning{ margin:0; font-size:calc(14px * var(--zoom,1)); line-height:1.6; color:var(--ink); }
 
-  /* Circle */
-  .circle {
-    flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin-top: 1px; cursor: pointer; transition: all 0.2s;
-    border: 2px solid #C8C0B8; background: #fff; font-size: 12px; font-weight: 700; color: #6A7A7B;
-  }
-  .circle.checked { background: #1F5C5C; border-color: #1F5C5C; box-shadow: 0 0 0 4px #D4E8E8; color: #fff; font-size: 16px; }
-  .circle.counter-circle { background: #C8E8DF; border: none; font-size: 15px; cursor: default; }
-  .circle.counter-done { background: #1F5C5C; color: #fff; font-size: 15px; font-weight: 700; }
+/* Learn more */
+details.more{ border-top:1px solid var(--line); padding-top:10px; }
+details.more summary{ list-style:none; cursor:pointer; font-size:13.5px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:6px; }
+details.more summary::-webkit-details-marker{ display:none; }
+details.more summary svg{ width:14px; height:14px; transition:transform .2s; }
+details.more[open] summary svg{ transform:rotate(90deg); }
+.more-body{ margin-top:10px; display:grid; gap:8px; }
+.more-body p{ margin:0; font-size:calc(14px * var(--zoom,1)); line-height:1.65; }
+.more-body .hist{ padding-left:12px; border-left:2px solid var(--accent); color:var(--ink); }
+.more-body ul{ margin:0; padding-left:18px; display:grid; gap:6px; }
+.more-body li{ font-size:calc(14px * var(--zoom,1)); line-height:1.6; }
+.more-body li::marker{ color:var(--brass); }
 
-  /* Content */
-  .step-content { flex: 1; min-width: 0; }
-  .step-text { margin: 0; font-size: 16px; line-height: 1.75; color: #18282A; white-space: pre-line; font-weight: 400; }
+/* Buttons */
+.btn{ justify-self:start; display:inline-flex; align-items:center; gap:8px; border-radius:99px; padding:9px 16px; font-size:13.5px; font-weight:700; cursor:pointer; border:1.5px solid var(--accent); background:var(--accent); color:var(--accent-ink); transition:all .2s; }
+.btn svg{ width:15px; height:15px; }
+.btn.ghost{ background:transparent; color:var(--muted); border-color:var(--line); }
+.next{ width:100%; margin-top:10px; padding:16px 18px; border-radius:var(--r); border:1px solid var(--line); background:var(--surface); color:var(--ink); font-size:15px; font-weight:700; cursor:pointer; display:flex; justify-content:space-between; align-items:center; box-shadow:var(--shadow); }
+.next.ready{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+.next small{ display:block; font-size:11px; letter-spacing:.12em; text-transform:uppercase; opacity:.7; font-weight:700; text-align:left; }
+.next svg{ width:20px; height:20px; }
 
-  /* Note */
-  .note { margin-top: 10px; padding: 10px 13px; background: #EEE9E0; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start; }
-  .note p { margin: 0; font-size: 14px; color: #2A3A3B; line-height: 1.6; font-weight: 400; }
+/* Counter */
+.counter{ background:var(--surface-2); border-radius:16px; padding:18px 16px; display:grid; gap:14px; justify-items:center; }
+.ring{ position:relative; width:168px; height:168px; }
+.ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
+.ring .seg-bg{ stroke:var(--line); }
+.ring .seg-on{ stroke:var(--accent); transition:stroke .25s; }
+.counter.complete .ring .seg-on{ stroke:var(--ok); }
+.ring-center{ position:absolute; inset:0; display:grid; place-content:center; text-align:center; }
+.ring-center b{ font-size:52px; line-height:1; font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--accent); }
+.counter.complete .ring-center b{ color:var(--ok); }
+.ring-center span{ font-size:12px; color:var(--muted); font-weight:600; margin-top:4px; }
+.counter-label{ margin:0; font-size:13px; font-weight:700; color:var(--muted); letter-spacing:.02em; }
+.counter-btns{ display:flex; gap:10px; width:100%; }
+.counter-btns button{ height:56px; border-radius:14px; cursor:pointer; font-weight:700; }
+.minus{ width:56px; flex-shrink:0; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-size:24px; }
+.minus:disabled{ opacity:.3; cursor:not-allowed; }
+.add{ flex:1; border:0; background:var(--accent); color:var(--accent-ink); font-size:15.5px; }
+.counter.complete .add{ background:var(--ok); color:#fff; cursor:default; }
+.alh{ margin:0; font-family:var(--ar); font-size:22px; color:var(--ok); }
 
-  /* Dua box */
-  .dua-box { background: #FDF6E3; border: 1px solid #D4AA50; border-radius: 12px; padding: 16px; margin-top: 14px; }
-  .dua-arabic { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; line-height: 2.1; text-align: right; direction: rtl; color: #18282A; margin: 0 0 12px; }
-  .dua-roman { font-size: 14px; font-style: italic; color: #4A3200; margin: 0 0 8px; line-height: 1.65; font-weight: 400; }
-  .dua-meaning { font-size: 14px; color: #2A1E00; margin: 0; line-height: 1.65; font-weight: 500; }
+/* Completion */
+.complete-card{ margin-top:18px; border-radius:20px; padding:28px 22px; text-align:center; color:#F1F7F5; background:radial-gradient(120% 120% at 50% 0%, #17635D 0%, #0B2E2B 70%); box-shadow:var(--shadow); }
+.complete-card .ar{ font-family:var(--ar); font-size:32px; margin:0 0 6px; line-height:1.7; }
+.complete-card .rom{ margin:0 0 4px; font-style:italic; font-size:16px; }
+.complete-card p:last-child{ margin:0; font-size:14px; opacity:.8; }
 
-  /* Counter */
-  .counter { background: #fff; border: 2px solid #1F5C5C; border-radius: 16px; padding: 18px 16px; margin: 16px 0; }
-  .counter.done { border-color: #2E7D52; }
-  .counter-label { margin: 0 0 4px; font-size: 14px; color: #3A5050; text-align: center; font-weight: 600; }
-  .counter-number { margin: 0 0 14px; font-size: 60px; font-weight: 800; color: #1F5C5C; line-height: 1; text-align: center; }
-  .counter-number.done { color: #2E7D52; }
-  .counter-number span { font-size: 26px; font-weight: 400; color: #A0B0B0; }
-  .counter-dots { display: flex; justify-content: center; gap: 7px; margin-bottom: 16px; }
-  .dot { width: 12px; height: 12px; border-radius: 50%; background: #D0C8C0; transition: background 0.25s; }
-  .dot.filled { background: #1F5C5C; }
-  .dot.filled.done { background: #2E7D52; }
-  .counter-btns { display: flex; gap: 10px; }
-  .btn-minus {
-    width: 56px; height: 56px; border-radius: 12px;
-    border: 2px solid #C8C0B8; background: #F8F5F0; color: #3A4A4B;
-    font-size: 26px; cursor: pointer; flex-shrink: 0; font-weight: 400;
-  }
-  .btn-minus:disabled { opacity: 0.25; cursor: not-allowed; }
-  .btn-add {
-    flex: 1; height: 56px; border-radius: 12px; border: none;
-    background: #1F5C5C; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
-  }
-  .btn-add.done { background: #2E7D52; cursor: default; }
-  .counter-alhamdulillah { text-align: center; color: #2E7D52; font-weight: 700; font-size: 18px; margin: 12px 0 0; font-family: Georgia, serif; }
+/* Pre-read */
+.intro{ margin:14px 0 0; color:var(--muted); font-size:calc(15px * var(--zoom,1)); line-height:1.65; max-width:62ch; }
+.group{ margin:26px 0 10px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--brass); font-weight:700; }
+.stories{ display:grid; gap:10px; }
+.story{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; }
+.story.feature{ background:linear-gradient(180deg, var(--brass-soft), var(--surface) 80%); border-color:var(--brass-line); }
+.story summary{ list-style:none; cursor:pointer; padding:15px 16px; display:grid; grid-template-columns:32px 1fr 16px; gap:12px; align-items:center; }
+.story summary::-webkit-details-marker{ display:none; }
+.badge{ width:32px; height:32px; border-radius:10px; display:grid; place-items:center; font-weight:800; font-size:13px; background:var(--accent-soft); color:var(--accent); font-variant-numeric:tabular-nums; }
+.badge svg{ width:17px; height:17px; }
+.story.read .badge{ background:var(--ok); color:#fff; }
+.story.feature .badge{ background:var(--brass); color:var(--surface); }
+.s-title{ margin:0; font-size:calc(16px * var(--zoom,1)); font-weight:700; line-height:1.35; }
+.s-meta{ margin:2px 0 0; font-size:calc(13px * var(--zoom,1)); color:var(--muted); line-height:1.45; }
+.chev{ width:16px; height:16px; color:var(--faint); transition:transform .2s; }
+.story[open] .chev{ transform:rotate(90deg); }
+.story-body{ padding:4px 16px 18px; border-top:1px solid var(--line); display:grid; gap:0; }
+.story-body h4{ margin:20px 0 6px; font-size:calc(15px * var(--zoom,1)); font-weight:800; color:var(--accent); letter-spacing:-.01em; }
+.story-body p{ margin:0 0 10px; font-size:calc(15px * var(--zoom,1)); line-height:1.75; }
+.story-body ul{ margin:0 0 10px; padding-left:18px; display:grid; gap:6px; }
+.story-body li{ font-size:calc(15px * var(--zoom,1)); line-height:1.7; margin-bottom:6px; }
+.story-body li::marker{ color:var(--brass); }
+.story-body .src{ font-size:12.5px; color:var(--muted); }
+.story-body .dua-box{ margin:6px 0 14px; }
+.live-it{ margin-top:14px; background:var(--accent-soft); border-radius:12px; padding:14px; }
+.live-it h5{ margin:0 0 8px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:800; }
+.live-it ul{ margin:0; padding-left:16px; }
+.live-it li{ font-size:calc(14px * var(--zoom,1)); line-height:1.6; margin-bottom:5px; }
+.aside{ margin-top:14px; background:var(--brass-soft); border:1px solid var(--brass-line); border-radius:12px; padding:12px 14px; }
+.aside p{ margin:0; font-size:calc(14px * var(--zoom,1)); line-height:1.65; }
+.story .btn{ margin-top:16px; }
+.short{ padding:0 16px 16px; display:grid; gap:8px; }
+.short p{ margin:0; font-size:calc(15px * var(--zoom,1)); line-height:1.7; }
+.where{ display:flex; gap:8px; align-items:flex-start; font-size:calc(13.5px * var(--zoom,1)); font-weight:600; color:var(--accent); }
+.where svg{ flex-shrink:0; width:15px; height:15px; margin-top:3px; }
+.carry{ margin-top:24px; border-radius:var(--r); padding:18px; background:var(--header); color:var(--header-ink); }
+.carry h3{ margin:0 0 10px; font-size:15px; font-weight:800; }
+.carry ul{ margin:0; padding-left:18px; display:grid; gap:6px; }
+.carry li{ font-size:14px; line-height:1.6; opacity:.92; }
 
-  /* Learn more */
-  .learn-more { margin-top: 14px; }
-  .learn-toggle { background: none; border: none; padding: 0; cursor: pointer; font-size: 14px; color: #1A4A4A; font-weight: 700; display: flex; align-items: center; gap: 5px; }
-  .learn-body { margin-top: 10px; padding: 13px 15px; background: #E0EEEE; border-radius: 10px; border-left: 3px solid #1F5C5C; display: none; }
-  .learn-body.open { display: block; }
-  .learn-history { margin: 0 0 8px; font-size: 14px; color: #0E2828; line-height: 1.65; font-weight: 400; }
-  .learn-tip { display: flex; gap: 8px; margin-bottom: 8px; }
-  .learn-tip-dot { color: #8A6A00; flex-shrink: 0; margin-top: 2px; font-size: 16px; font-weight: 700; }
-  .learn-tip p { margin: 0; font-size: 14px; color: #0E2828; line-height: 1.65; font-weight: 400; }
+/* Bottom tab bar */
+.tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:30; background:color-mix(in srgb, var(--surface) 88%, transparent); -webkit-backdrop-filter:saturate(1.6) blur(16px); backdrop-filter:saturate(1.6) blur(16px); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); }
+.tabbar .wrap{ display:grid; grid-template-columns:repeat(5,1fr); }
+.tab{ border:0; background:none; cursor:pointer; padding:9px 2px 10px; display:grid; justify-items:center; gap:3px; color:var(--faint); font-size:11px; font-weight:600; position:relative; }
+.tab svg{ width:22px; height:22px; }
+.tab.active{ color:var(--accent); }
+.tab.active::before{ content:""; position:absolute; top:0; left:30%; right:30%; height:2.5px; border-radius:0 0 3px 3px; background:var(--accent); }
+.tab .dot{ position:absolute; top:7px; right:calc(50% - 17px); width:8px; height:8px; border-radius:50%; background:var(--ok); border:2px solid var(--surface); }
 
-  /* Story link inside a rite step */
-  .story-link {
-    margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
-    background: #FDF6E3; border: 1px solid #E0C97A; color: #6A4E00;
-    border-radius: 99px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;
-  }
-
-  /* Mark done button */
-  .mark-btn {
-    margin-top: 14px; padding: 10px 20px; border-radius: 99px;
-    border: 2px solid #1F5C5C; background: #1F5C5C;
-    color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .mark-btn.done { background: #fff; color: #5A7070; border-color: #B0C0C0; }
-
-  /* Next button */
-  .next-btn {
-    width: 100%; margin-top: 24px; padding: 16px;
-    border-radius: 14px; border: 2px solid #1F5C5C;
-    background: #EAF4F4; color: #1A4040;
-    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.25s;
-  }
-  .next-btn.ready { background: #1F5C5C; color: #fff; border-color: #1F5C5C; }
-
-  /* Completion card */
-  .completion-card {
-    margin-top: 24px;
-    background: linear-gradient(135deg, #1F5C5C, #0F3030);
-    border-radius: 18px; padding: 28px 22px;
-    text-align: center; color: #fff;
-    box-shadow: 0 8px 32px rgba(31,92,92,0.35);
-    display: none;
-  }
-  .completion-card.show { display: block; }
-  .completion-arabic { font-family: Georgia, serif; font-size: 30px; margin: 0 0 10px; line-height: 1.6; }
-  .completion-roman { margin: 0 0 6px; font-size: 16px; opacity: 0.95; font-style: italic; }
-  .completion-msg { margin: 0; font-size: 14px; opacity: 0.85; }
-
-  /* ── Pre-read ─────────────────────────────────────────── */
-  .pre-intro { margin: 16px 0 6px; font-size: 15px; line-height: 1.7; color: #2A3A3B; }
-  .group-label { margin: 22px 0 10px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #8A6A00; font-weight: 700; }
-  .story { background: #fff; border: 1px solid #E2DAD0; border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
-  .story.read { border-color: #B7D3CC; }
-  .story.kaaba { border-color: #E0C97A; background: #FFFCF4; }
-  .story.kaaba .story-num { background: #FDF6E3; }
-  .story summary {
-    list-style: none; cursor: pointer; padding: 15px 16px;
-    display: flex; gap: 12px; align-items: flex-start;
-  }
-  .story summary::-webkit-details-marker { display: none; }
-  .story summary:focus-visible, .story-link:focus-visible, .tab:focus-visible, .mark-btn:focus-visible { outline: 2px solid #B8943A; outline-offset: 2px; }
-  .story-num {
-    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
-    background: #EAF4F4; color: #1F5C5C; font-weight: 800; font-size: 13px;
-    display: flex; align-items: center; justify-content: center; margin-top: 1px;
-  }
-  .story.read .story-num { background: #1F5C5C; color: #fff; }
-  .story-head { flex: 1; min-width: 0; }
-  .story-title { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.4; color: #18282A; }
-  .story-meta { margin: 3px 0 0; font-size: 12.5px; color: #5A7070; line-height: 1.5; }
-  .story-chev { flex-shrink: 0; color: #8A9FA0; font-size: 14px; margin-top: 6px; transition: transform 0.2s; }
-  .story[open] .story-chev { transform: rotate(90deg); }
-  .story-body { padding: 2px 16px 18px; border-top: 1px solid #EEE9E0; }
-  .story-body h4 { margin: 18px 0 6px; font-size: 14px; font-weight: 800; color: #1F5C5C; }
-  .story-body p { margin: 0 0 10px; font-size: 15px; line-height: 1.75; color: #18282A; }
-  .story-body ul { margin: 0 0 10px; padding-left: 18px; }
-  .story-body li { font-size: 15px; line-height: 1.7; margin-bottom: 6px; color: #18282A; }
-  .story-body .src { font-size: 12.5px; color: #5A7070; }
-  .story-body .dua-box { margin: 10px 0 14px; }
-  .live-it { margin-top: 16px; background: #E0EEEE; border-left: 3px solid #1F5C5C; border-radius: 10px; padding: 12px 14px; }
-  .live-it h5 { margin: 0 0 8px; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: #1F5C5C; font-weight: 800; }
-  .live-it ul { margin: 0; padding-left: 16px; }
-  .live-it li { font-size: 14px; line-height: 1.6; color: #0E2828; margin-bottom: 5px; }
-  .aside { background: #FDF6E3; border: 1px solid #E0C97A; border-radius: 10px; padding: 12px 14px; margin-top: 14px; }
-  .aside p { margin: 0; font-size: 14px; line-height: 1.65; color: #2A1E00; }
-  .read-btn { margin-top: 16px; }
-  .short { padding: 0 16px 16px; }
-  .short p { margin: 0 0 8px; font-size: 15px; line-height: 1.7; color: #18282A; }
-  .short .where { font-size: 13.5px; color: #1F5C5C; font-weight: 600; }
-  .takeaways { background: linear-gradient(135deg, #1F5C5C, #163F3F); color: #fff; border-radius: 14px; padding: 18px 16px; margin-top: 22px; }
-  .takeaways h3 { margin: 0 0 10px; font-size: 15px; font-weight: 800; }
-  .takeaways ul { margin: 0; padding-left: 18px; }
-  .takeaways li { font-size: 14px; line-height: 1.65; margin-bottom: 6px; opacity: 0.95; }
-
-  @media (prefers-reduced-motion: reduce) { .progress-fill, .story-chev, .dot { transition: none; } }
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 </style>
 
-<div id="app">
-  <!-- Header -->
-  <div class="header">
-    <p class="header-label">Step-by-step guide · Hanafi</p>
-    <h1 class="header-title">Sabrina's Umrah 🤍</h1>
-    <div class="progress-row">
-      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-      <span class="progress-label" id="progress-label">0% complete</span>
-    </div>
-    <div class="tabs" id="tabs"></div>
-  </div>
-
-  <!-- Section heading -->
-  <div class="section-heading">
-    <div class="section-heading-row">
-      <div>
-        <h2 class="section-title" id="section-title"></h2>
-        <p class="section-sub" id="section-sub"></p>
+<header class="top">
+  <div class="wrap gutter">
+    <div class="brand-row">
+      <div class="brand">
+        <div>
+          <h1>Sabrina's Umrah</h1>
+          <small>Umrah guide · Hanafi</small>
+        </div>
+        <span class="ar" lang="ar">لَبَّيْك</span>
       </div>
-      <span class="section-count" id="section-count"></span>
+      <div class="tools">
+        <button type="button" class="aa" id="aa" aria-label="Text size"><span class="s1">A</span><span class="s2">A</span><span class="lvl" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      </div>
     </div>
-    <div class="divider"></div>
+    <div class="prog" aria-label="Umrah progress">
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <span id="pct">0% done</span>
+    </div>
   </div>
+</header>
 
-  <!-- Steps container -->
-  <div class="steps" id="steps"></div>
-</div>
+<main>
+  <div class="wrap gutter">
+    <div class="heading">
+      <div>
+        <p class="eyebrow" id="eyebrow"></p>
+        <h2 id="title"></h2>
+        <p class="sub" id="sub"></p>
+      </div>
+      <span class="pill" id="count"></span>
+    </div>
+    <div id="content"></div>
+  </div>
+</main>
+
+<nav class="tabbar" aria-label="Sections">
+  <div class="wrap gutter" id="tabs"></div>
+</nav>
 
 <script>
 const SECTIONS = [
@@ -400,7 +413,7 @@ const KAABA = { title:'Looking at the Ka\'bah', meta:'The reward, what it means,
 
 const MORE = [
   { title:'The Year of the Elephant', text:"Abraha, the Abyssinian governor of Yemen, marched on Makkah with an elephant to destroy the Kaaba. Abdul-Muttalib asked him only for his camels back: he owned the camels, and the House had its own Lord to protect it. Flocks of birds pelted the army with stones of baked clay (Surah al-Fil). The Prophet ﷺ was born that same year.", where:'Recite Surah al-Fil while looking at the Kaaba.' },
-  { title:'Hudaybiyyah and the origin of ramal', text:"In 6 AH the Prophet ﷺ set out with about 1,400 companions to perform umrah and was blocked at Hudaybiyyah. The treaty seemed humiliating, but the Qur'an called it a clear victory (Surah al-Fath). The next year they returned for 'Umrat al-Qada. The Quraysh had said Madinah's fever had weakened them, so the men bared their right shoulders (idtiba') and walked briskly (ramal) in the first three circuits to show strength. The Prophet ﷺ performed four umrahs in his lifetime.", where:"You'll see the men around you doing this in tawaf. Women walk normally." },
+  { title:'Hudaybiyyah and the origin of ramal', text:"In 6 AH the Prophet ﷺ set out with about 1,400 companions to perform umrah and was blocked at Hudaybiyyah. The treaty seemed humiliating, but the Qur'an called it a clear victory (Surah al-Fath). The next year they returned for 'Umrat al-Qada. The Quraysh had said Madinah's fever had weakened them, so the men bared their right shoulders (idtiba') and walked briskly (ramal) in the first three circuits to show strength. The Prophet ﷺ performed four umrahs in his lifetime.", where:{ f:"You'll see the men around you doing this in tawaf. Women walk normally.", m:"You'll do both yourself in the tawaf of your Umrah." } },
   { title:'Umar and the Black Stone', text:"Umar (RA) kissed the Black Stone and said he knew it was only a stone that could neither harm nor benefit, and that he would not have kissed it had he not seen the Prophet ﷺ do so (Bukhari). Every ritual is about following the Prophet ﷺ and obeying Allah, not the objects themselves.", where:'If the crowd is heavy, pointing from a distance is fully sunnah.' },
   { title:'The Conquest of Makkah', text:"In 8 AH the man who had been driven out of Makkah returned with 10,000 companions, head bowed so low it nearly touched his saddle. He circled the Kaaba and knocked down its 360 idols, reciting \"Truth has come and falsehood has vanished\" (17:81). He told the Quraysh who had persecuted him that they were free to go. Bilal, once tortured on Makkah's sands, climbed the Kaaba and gave the adhan. The Prophet ﷺ returned the Kaaba's key to Uthman ibn Talha's family, the Banu Shaybah, who still hold it today.", where:'Every adhan you hear in the Haram echoes that first one from the Kaaba.' },
   { title:'The weeping tree trunk', text:"The Prophet ﷺ used to deliver sermons leaning against a palm trunk. When a wooden minbar was built, the trunk cried out like a child until he came down and embraced it (Bukhari). He ﷺ said the area between his house and his minbar is a garden from the gardens of Paradise.", where:'The pillar al-Hannanah marks the spot, by the Rawdah.' },
@@ -417,20 +430,28 @@ const TAKEAWAYS = [
   "In Madinah, make wudu at the hotel before going to Quba.",
 ];
 
+// Fields may be a plain value, or { m: …, f: … } for gender-specific content. `only` limits a step to one gender.
 const STEPS = [
   { id:'i1', section:'ihram',
     text:'Take a full bath (ghusl) with the intention of Ihram.',
     note:'If unable, wudu is sufficient.',
-    detail:{ tips:['Trim nails and remove unwanted hair now — not allowed once in Ihram.','You may put perfume on your body before Ihram, but not on your clothes. If the scent lingers afterward, that is fine.'] }
+    detail:{ tips:{
+      f:['Trim nails and remove unwanted hair now — not allowed once in Ihram.','You may put perfume on your body before Ihram, but not on your clothes. If the scent lingers afterward, that is fine.'],
+      m:['Trim nails and moustache and remove underarm and pubic hair now — not allowed once in Ihram.','You may put perfume on your body before Ihram, but not on the Ihram sheets. If the scent lingers afterward, that is fine.'] } }
   },
-  { id:'i2', section:'ihram',
+  { id:'i2', section:'ihram', only:'f',
     text:"Dress modestly. Your regular abaya and hijab are your Ihram — no special garment for women.",
     note:'Cover everything except your face and hands. In the Hanafi school, socks and gloves are allowed. Do not let any cloth touch your face while in Ihram.',
     detail:{ tips:['Do not cut or trim hair or nails while in Ihram.','Do not apply perfume or scented products, including scented soap, lotion or wipes.','Your face must not be covered by anything that touches it. To screen your face from men, Hanafi scholars recommend something held away from the skin, such as a visor-style cap under the hijab with a cloth hanging over the brim.','Stitched clothing, shoes, socks and gloves are all fine for women.','Avoid intimacy with your husband.','All restrictions lift once you trim your hair at the end.'] }
   },
+  { id:'i2m', section:'ihram', only:'m',
+    text:"Put on the two white sheets of Ihram: the izar wrapped around your waist, and the rida over both shoulders.",
+    note:'Nothing stitched or shaped to the body: no shirt, trousers, underwear, socks or cap. Keep your head and face uncovered the whole time you are in Ihram.',
+    detail:{ tips:['Footwear must leave the raised bone on top of the foot (mid-foot) uncovered. Simple sandals or flip-flops are safest.','A belt, money pouch, watch, glasses, ring and umbrella are all fine.','Do not cut or trim hair or nails while in Ihram.','Do not apply perfume or scented products, including scented soap, lotion or wipes.','Do not cover your head or face, even with a towel while sleeping.','Avoid intimacy with your wife.','All restrictions lift once you shave or trim your head at the end.'] }
+  },
   { id:'i3', section:'ihram',
     text:"Pray 2 rak'ahs with the intention of Ihram, if it is not a disliked time.",
-    note:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.",
+    note:{ f:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.", m:"Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd. Keep both shoulders covered with the rida for this prayer." },
     detail:{ tips:['This prayer is sunnah in the Hanafi school, not required.','Disliked times: from Fajr until about 15 minutes after sunrise, from Asr until sunset, and the few minutes when the sun is at its peak. At those times, skip the prayer and go straight to your intention.'] }
   },
   { id:'i4', section:'ihram',
@@ -440,10 +461,10 @@ const STEPS = [
     detail:{ tips:['The Miqat are fixed boundaries set by the Prophet ﷺ. No one intending Umrah may cross without entering Ihram.','If flying, the airline or group leader will announce when you are approaching the Miqat.'] }
   },
   { id:'i5', section:'ihram',
-    text:'Say the Talbiyah right after your intention. Saying it at least once is required to enter Ihram. Women say it quietly. Keep repeating it often until you begin Tawaf.',
+    text:{ f:'Say the Talbiyah right after your intention. Saying it at least once is required to enter Ihram. Women say it quietly. Keep repeating it often until you begin Tawaf.',
+           m:'Say the Talbiyah right after your intention. Saying it at least once is required to enter Ihram. Men say it aloud, in a moderate voice. Keep repeating it often until you begin Tawaf.' },
     dua:{ arabic:'لَبَّيْكَ اللّٰهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ', roman:'Labbayk Allāhumma labbayk. Labbayk lā sharīka laka labbayk. Innal-ḥamda wan-niʿmata laka wal-mulk. Lā sharīka lak.', meaning:'Here I am, O Allah, here I am. You have no partner. All praise, grace, and sovereignty belong to You. You have no partner.' },
-    detail:{ history:"The Talbiyah is the pilgrim's call. You are answering Allah's invitation, just as Ibrahim (AS) once called all of humanity to this House and they answered across time." },
-    story:'ibrahim'
+    detail:{ history:"The Talbiyah is the pilgrim's call. You are answering Allah's invitation, just as Ibrahim (AS) once called all of humanity to this House and they answered across time." }
   },
   { id:'t1', section:'tawaf',
     text:'Make sure you have wudu. Enter Masjid Al-Haram with your right foot and say:',
@@ -452,14 +473,19 @@ const STEPS = [
   },
   { id:'t2', section:'tawaf',
     text:"When the Ka'bah comes into view for the first time — stop. Raise your hands and make dua. This is one of the most powerful moments of the entire Umrah.",
-    note:"No fixed dua here. Scholars say dua is accepted at first sight of the Ka'bah. Speak freely — for yourself, your husband, your children, your parents. Take your time.",
+    note:{ f:"No fixed dua here. Scholars say dua is accepted at first sight of the Ka'bah. Speak freely — for yourself, your husband, your children, your parents. Take your time.",
+           m:"No fixed dua here. Scholars say dua is accepted at first sight of the Ka'bah. Speak freely — for yourself, your wife, your children, your parents. Take your time." },
     detail:{ history:"This is the House of Allah — the direction every Muslim on earth faces five times a day. Seeing it for the first time is a gift very few people receive. Before anything else, ask.", tips:['Above it, in the seventh heaven, 70,000 angels a day worship at al-Bayt al-Ma\'mur. Your tawaf mirrors theirs.','Don\'t reach for your phone first. Make the du\'a, then take a photo if you like.','See "Looking at the Ka\'bah" at the top of the Pre-read tab for more to reflect on.'] }
+  },
+  { id:'t2m', section:'tawaf', only:'m',
+    text:"Before you begin, uncover your right shoulder (idtiba'): pass the rida under your right armpit and throw its end over your left shoulder. Keep it this way for all 7 circuits.",
+    note:"Idtiba' is sunnah for men only, and only in a Tawaf that is followed by Sa'ee, like this one. Cover the shoulder again once Tawaf is done.",
+    detail:{ history:"The Prophet ﷺ and his companions did this in the Umrah of Qada (7 AH), together with raml, to show the Quraysh they were strong and not weakened by Madinah's fever." }
   },
   { id:'t3', section:'tawaf',
     text:"Walk to the Black Stone corner (Hajar Al-Aswad). Make your niyyah in your heart: 'I intend to perform Tawaf of the Ka'bah for Umrah.'",
     note:'Stand slightly to the right of the Black Stone (on the Yemeni Corner side), so your whole body passes it as you begin. A green light on the wall opposite marks its line.',
-    detail:{ history:'The Black Stone marks where each circuit begins and ends. The Prophet ﷺ kissed it. It is not worshipped — it is a marker and a physical connection to the time of Ibrahim (AS).' },
-    story:'makkan'
+    detail:{ history:'The Black Stone marks where each circuit begins and ends. The Prophet ﷺ kissed it. It is not worshipped — it is a marker and a physical connection to the time of Ibrahim (AS).' }
   },
   { id:'t4', section:'tawaf',
     text:'Stop reciting the Talbiyah now. Face the Black Stone and raise both hands to your ears, palms facing it, as in the opening takbir of prayer, and say the dua. Then lower your hands, point both palms toward the Stone, and kiss your palms. This begins circuit 1.',
@@ -467,30 +493,33 @@ const STEPS = [
     note:'Kiss or touch the Black Stone only if you can reach it without pushing. If crowded, pointing from where you stand is perfectly valid.'
   },
   { id:'t5', section:'tawaf', isCounter:true, counterKey:'tawaf',
-    text:"Walk counter-clockwise, Ka'bah on your LEFT.\n\n● Yemeni Corner (last corner before the Black Stone): touch with your right hand if possible — no dua. If crowded, walk past.\n\n● Between the Yemeni Corner and the Black Stone: recite the dua below — every circuit, all 7 times.\n\n● Back at the Black Stone = 1 circuit done. Face it, point your palms toward it, say Bismillāhi Allāhu Akbar, kiss your palms (no need to raise them to your ears again), and tap the counter.",
+    text:{
+      f:"Walk counter-clockwise, Ka'bah on your LEFT.\n\n● Yemeni Corner (last corner before the Black Stone): touch with your right hand if possible — no dua. If crowded, walk past.\n\n● Between the Yemeni Corner and the Black Stone: recite the dua below — every circuit, all 7 times.\n\n● Back at the Black Stone = 1 circuit done. Face it, point your palms toward it, say Bismillāhi Allāhu Akbar, kiss your palms (no need to raise them to your ears again), and tap the counter.",
+      m:"Walk counter-clockwise, Ka'bah on your LEFT.\n\n● Circuits 1–3: walk briskly with short steps, shoulders moving (raml). Circuits 4–7: walk normally.\n\n● Yemeni Corner (last corner before the Black Stone): touch with your right hand if possible — no dua. If crowded, walk past.\n\n● Between the Yemeni Corner and the Black Stone: recite the dua below — every circuit, all 7 times.\n\n● Back at the Black Stone = 1 circuit done. Face it, point your palms toward it, say Bismillāhi Allāhu Akbar, kiss your palms (no need to raise them to your ears again), and tap the counter." },
     dua:{ arabic:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', roman:'Rabbanā ātinā fid-dunyā ḥasanatan wa fil-ākhirati ḥasanatan wa qinā \'adhāban-nār', meaning:'Our Lord, give us good in this world, good in the Hereafter, and protect us from the Fire.' },
     note:'For the rest of each circuit, no fixed dua — speak to Allah freely in any language. If you lose count, take the lower number you are sure of.',
-    detail:{ tips:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot.','Stay calm and move with the flow of people.'] }
+    detail:{ tips:{
+      f:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot.','Women walk at a normal pace in every circuit and keep the shoulders covered.','Stay calm and move with the flow of people.'],
+      m:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','Raml is sunnah, not required. If the crowd is too dense to do it without pushing, walk normally. Moving further out from the Ka\'bah can give you room.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot. Cover your shoulder for the prayer.','Stay calm and move with the flow of people.'] } }
   },
   { id:'t6', section:'tawaf',
     text:'After all 7 circuits, pray 2 rak\'ahs near Maqam Ibrahim. If you cannot get close, anywhere in the Masjid is fine. In the Hanafi school these 2 rak\'ahs are wajib.',
-    notes:["Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.","Don't pray them in a disliked time. If you finish Tawaf after Fajr time has begun, pray them after sunrise (about 15 minutes after); if after Asr, pray them after Maghrib. Your plan finishes Tawaf before Fajr, so you should be fine."],
-    detail:{ history:"Maqam Ibrahim is the stone on which Ibrahim (AS) stood while building the Ka'bah. Allah commanded: 'Take the station of Ibrahim as a place of prayer.' (Quran 2:125)" },
-    story:'ibrahim'
+    notes:{
+      f:["Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.","Don't pray them in a disliked time. If you finish Tawaf after Fajr time has begun, pray them after sunrise (about 15 minutes after); if after Asr, pray them after Maghrib."],
+      m:["Cover your right shoulder again before you pray. Idtiba' ends with Tawaf.","Recite Surah Al-Kafirun in the 1st rak'ah and Surah Al-Ikhlas in the 2nd.","Don't pray them in a disliked time. If you finish Tawaf after Fajr time has begun, pray them after sunrise (about 15 minutes after); if after Asr, pray them after Maghrib."] },
+    detail:{ history:"Maqam Ibrahim is the stone on which Ibrahim (AS) stood while building the Ka'bah. Allah commanded: 'Take the station of Ibrahim as a place of prayer.' (Quran 2:125)" }
   },
   { id:'t7', section:'tawaf',
     text:'Drink Zamzam water. Face the Qiblah, standing, and drink in 3 sips, pausing to breathe between them. Before you drink, make dua — the Prophet ﷺ said Zamzam is for whatever it is drunk for. You may recite this dua, then ask Allah for whatever is in your heart:',
     dua:{ arabic:'اللّٰهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ', roman:"Allāhumma innī as'aluka 'ilman nāfi'an wa rizqan wāsi'an wa shifā'an min kulli dā'", meaning:'O Allah, I ask You for beneficial knowledge, abundant provision, and cure from every illness.' },
     note:'After this dua, ask for anything on your heart — your children, your family, your health, your deen. The personal dua here is what matters most.',
-    detail:{ history:"Zamzam has flowed continuously since Allah caused it to spring from the earth for baby Ismail (AS) when his mother Hajar desperately searched for water. It has never dried up in thousands of years. The Prophet ﷺ said: 'The best water on the face of the earth is Zamzam.' (Tabarani)", tips:['Before heading to Safa, it is sunnah to go back to the Black Stone line and point your palms toward it once more, if it is easy.'] },
-    story:'ibrahim'
+    detail:{ history:"Zamzam has flowed continuously since Allah caused it to spring from the earth for baby Ismail (AS) when his mother Hajar desperately searched for water. It has never dried up in thousands of years. The Prophet ﷺ said: 'The best water on the face of the earth is Zamzam.' (Tabarani)", tips:['Before heading to Safa, it is sunnah to go back to the Black Stone line and point your palms toward it once more, if it is easy.'] }
   },
   { id:'s1', section:'saee',
     text:'Walk toward the Safa hill inside the Mas\'aa gallery. As you approach Safa for the first time, recite this verse — once only:',
     dua:{ arabic:'إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللّٰهِ', roman:"Innaṣ-ṣafā wal-marwata min sha'ā'irillāh", meaning:'Indeed Safa and Marwa are among the rites of Allah. (Quran 2:158)' },
     note:'Recite this only the first time approaching Safa — not on return laps.',
-    detail:{ history:"When the Prophet ﷺ approached Safa he recited this verse then said: 'We begin with what Allah began with.' (Sahih Muslim)" },
-    story:'makkan'
+    detail:{ history:"When the Prophet ﷺ approached Safa he recited this verse then said: 'We begin with what Allah began with.' (Sahih Muslim)" }
   },
   { id:'s2', section:'saee',
     text:'Climb Safa. Face the Ka\'bah direction, raise your hands, and recite this dua 3 times. Between each repetition, lower your hands and make personal dua silently.',
@@ -499,350 +528,421 @@ const STEPS = [
     detail:{ history:'This is the exact dua the Prophet ﷺ made on Safa, narrated in Sahih Muslim (1218). He began with Allahu Akbar three times, said the dhikr, then made personal dua between each repetition. You are retracing his footsteps.' }
   },
   { id:'s3', section:'saee', isCounter:true, counterKey:'saee',
-    text:"Walk from Safa to Marwa — lap 1. Walk at your own pace the entire way.\n\nAt Marwa: climb, face the Ka'bah, and repeat the same dua 3 times with personal dua in between.\n\nWalk back to Safa — lap 2. Continue until lap 7, which ends on Marwa.",
+    text:{
+      f:"Walk from Safa to Marwa — lap 1. Walk at your own pace the entire way.\n\nAt Marwa: climb, face the Ka'bah, and repeat the same dua 3 times with personal dua in between.\n\nWalk back to Safa — lap 2. Continue until lap 7, which ends on Marwa.",
+      m:"Walk from Safa to Marwa — lap 1. Between the two green lights on the walls, jog at a moderate pace; walk normally the rest of the way. Do this in every lap.\n\nAt Marwa: climb, face the Ka'bah, and repeat the same dua 3 times with personal dua in between.\n\nWalk back to Safa — lap 2. Continue until lap 7, which ends on Marwa." },
     notes:['Safa → Marwa = lap 1. Marwa → Safa = lap 2. You finish on Marwa at lap 7.','Tap the counter each time you arrive at a hill after walking — not at Safa at the very start.'],
-    detail:{ history:"Sa'ee commemorates Hajar (AS), wife of Ibrahim (AS), who ran between these hills searching for water for her infant son Ismail. Her trust in Allah caused the Zamzam spring to burst from the earth. Every step honours her faith.", tips:['In the Hanafi school, Sa\'ee is wajib rather than a pillar, and starting at Safa is required. All 7 laps must be done.','Wudu is recommended for Sa\'ee but not required.','If the congregational prayer starts, join it, then continue the lap from where you stopped.','Between the hills: no fixed dua — make sincere personal dua the whole way.','Women walk at a normal pace the entire Sa\'ee.','Men walk briskly between the two green lights on the walls.'] },
-    story:'ibrahim'
+    detail:{ history:"Sa'ee commemorates Hajar (AS), wife of Ibrahim (AS), who ran between these hills searching for water for her infant son Ismail. Her trust in Allah caused the Zamzam spring to burst from the earth. Every step honours her faith.", tips:{
+      f:['In the Hanafi school, Sa\'ee is wajib rather than a pillar, and starting at Safa is required. All 7 laps must be done.','Wudu is recommended for Sa\'ee but not required.','If the congregational prayer starts, join it, then continue the lap from where you stopped.','Between the hills: no fixed dua — make sincere personal dua the whole way.','Women walk at a normal pace the entire Sa\'ee, including between the green lights.'],
+      m:['In the Hanafi school, Sa\'ee is wajib rather than a pillar, and starting at Safa is required. All 7 laps must be done.','Wudu is recommended for Sa\'ee but not required.','If the congregational prayer starts, join it, then continue the lap from where you stopped.','Between the hills: no fixed dua — make sincere personal dua the whole way.','The green-lit stretch marks the valley floor where Hajar ran. Jogging there is sunnah for men only.','Keep both shoulders covered. Idtiba\' was only for Tawaf.'] } }
   },
-  { id:'c1', section:'completion',
+  { id:'c1', section:'completion', only:'f',
     text:"Trim about a fingertip's length (roughly 1 inch / 2.5 cm) from the ends of at least a quarter of your hair. Trimming from all of it is better. This can be done under your hijab — it does not need to be visible.",
     note:'In the Hanafi school, the trim is wajib and must be done inside the Haram boundary. Your Makkah hotel counts. Once done, all Ihram restrictions are lifted.',
     detail:{ tips:['A few strands from the hairline is not enough in the Hanafi school. An easy way: gather all your hair (or a braid) together and cut the ends.','You can trim your own hair once Sa\'ee is done, or your husband can do it after he has finished his own.','Shaving is for men only. Women always trim.'] }
   },
+  { id:'c1m', section:'completion', only:'m',
+    text:"Shave your whole head, or trim. Shaving is better: the Prophet ﷺ prayed three times for those who shave before including those who trim.",
+    note:'In the Hanafi school, shaving or trimming is wajib, must cover at least a quarter of the head, and must be done inside the Haram boundary. Once done, all Ihram restrictions are lifted.',
+    detail:{ tips:['To trim instead, cut about a fingertip\'s length (roughly 1 inch / 2.5 cm) from at least a quarter of your head. Doing the whole head is better.','If your hair is already shorter than a fingertip\'s length, trimming isn\'t possible, so you must shave.','Barbershops line the exits near Marwah and the clock tower. Expect a queue right after Fajr.','Once your own Sa\'ee is done, you may trim your wife\'s hair for her.'] }
+  },
   { id:'c2', section:'completion',
-    text:'Your Umrah is complete 🤍. Ask Allah to accept it:',
+    text:'Your Umrah is complete. Ask Allah to accept it:',
     dua:{ arabic:'اللّٰهُمَّ تَقَبَّلْ مِنِّي إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ', roman:"Allāhumma taqabbal minnī innaka antas-samī'ul-'alīm", meaning:'O Allah, accept from me. Indeed You are the All-Hearing, All-Knowing.' },
-    note:"You may also say مِنَّا (minnā — 'from us') to include your husband and family. It echoes the du'a Ibrahim and Ismail made while building the Ka'bah.",
-    story:'ibrahim'
+    note:{ f:"You may also say مِنَّا (minnā — 'from us') to include your husband and family. It echoes the du'a Ibrahim and Ismail made while building the Ka'bah.",
+           m:"You may also say مِنَّا (minnā — 'from us') to include your wife and family. It echoes the du'a Ibrahim and Ismail made while building the Ka'bah." }
   },
 ];
+
+
+// ── Icons ─────────────────────────────────────────────────────────────────────
+const svg = (d, extra='') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
+const ICON = {
+  preread: svg('<path d="M3 5.5A1.5 1.5 0 0 1 4.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H3z"/><path d="M21 5.5A1.5 1.5 0 0 0 19.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"/>'),
+  ihram: svg('<path d="M5 20c0-9 6-15 15-16-.5 9-6.5 15-15 16z"/><path d="M5 20l8-8"/>'),
+  tawaf: svg('<rect x="9" y="9" width="6" height="6" rx="1"/><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M17.8 3.5v3.3h-3.3"/>'),
+  saee: svg('<path d="M4 8h14"/><path d="M15 5l3 3-3 3"/><path d="M20 16H6"/><path d="M9 13l-3 3 3 3"/>'),
+  completion: svg('<circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5.5"/>'),
+  check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'stroke-width="2.6"'),
+  info: svg('<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.6v.1"/>', 'stroke-width="2"'),
+  chev: svg('<path d="M9 6l6 6-6 6"/>', 'class="chev" stroke-width="2.2"'),
+  chevS: svg('<path d="M9 6l6 6-6 6"/>', 'stroke-width="2.4"'),
+  arrow: svg('<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>', 'stroke-width="2"'),
+  pin: svg('<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'),
+  kaaba: svg('<path d="M4 7l8-3 8 3v10l-8 3-8-3z"/><path d="M4 7l8 3 8-3"/><path d="M12 10v10"/><path d="M4 10.5l8 3 8-3"/>'),
+};
+const esc = t => String(t);
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let activeSection = 'preread';
 let openStory = null;
-const checked  = {};
-const counters = { tawaf: 0, saee: 0 };
+let checked  = {};
+let counters = { tawaf: 0, saee: 0 };
+// Progress is saved on this phone after every change, so a reload or a locked screen never loses your place.
+try {
+  const pr = JSON.parse(localStorage.getItem('sabrina-progress') || 'null');
+  if (pr && typeof pr === 'object') {
+    if (pr.checked && typeof pr.checked === 'object') checked = pr.checked;
+    if (pr.counters) counters = { tawaf: Math.min(7, +pr.counters.tawaf || 0), saee: Math.min(7, +pr.counters.saee || 0) };
+  }
+} catch (e) {}
+const SIZES = [1, 1.15, 1.3];
+let textSize = 0;
+try { const ts = +localStorage.getItem('sabrina-size'); if (ts >= 0 && ts < SIZES.length) textSize = ts; } catch (e) {}
+let gender = 'f';
 let readStories = {};
-try { readStories = JSON.parse(localStorage.getItem('umrah-preread') || '{}') || {}; } catch (e) { readStories = {}; }
-try { const t = localStorage.getItem('umrah-tab'); if (t && SECTIONS.some(s => s.key === t)) activeSection = t; } catch (e) {}
-function saveRead() { try { localStorage.setItem('umrah-preread', JSON.stringify(readStories)); } catch (e) {} }
-function saveTab() { try { localStorage.setItem('umrah-tab', activeSection); } catch (e) {} }
+try { readStories = JSON.parse(localStorage.getItem('sabrina-preread') || '{}') || {}; } catch (e) { readStories = {}; }
+try { const t = localStorage.getItem('sabrina-tab'); if (t && SECTIONS.some(s => s.key === t)) activeSection = t; } catch (e) {}
+const store = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+let saveOk = true;
+function saveProgress() { saveOk = store('sabrina-progress', JSON.stringify({ checked, counters, savedAt: Date.now() })); }
+function hasProgress() { return Object.values(checked).some(Boolean) || counters.tawaf > 0 || counters.saee > 0; }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Pick the gender-specific value of a field, if it has one.
+function g(v) { return (v && typeof v === 'object' && !Array.isArray(v) && ('m' in v || 'f' in v)) ? v[gender] : v; }
+function stepsFor(sec) { return STEPS.filter(s => (!sec || s.section === sec) && (!s.only || s.only === gender)); }
+function isDone(s) { return s.isCounter ? counters[s.counterKey] >= 7 : !!checked[s.id]; }
+
 function sectionDone(key) {
   if (key === 'preread') return STORIES.every(s => readStories[s.id]);
-  return STEPS.filter(s => s.section === key).every(s =>
-    s.isCounter ? counters[s.counterKey] >= 7 : !!checked[s.id]
-  );
+  return stepsFor(key).every(isDone);
 }
-
 function totalProgress() {
-  const checkable = STEPS.filter(s => !s.isCounter);
-  const done = checkable.filter(s => checked[s.id]).length
-    + (counters.tawaf >= 7 ? 1 : 0)
-    + (counters.saee  >= 7 ? 1 : 0);
-  const total = checkable.length + 2;
-  return { done, total, pct: Math.round((done / total) * 100) };
+  const all = stepsFor().filter(s => s.section !== 'preread');
+  const done = all.filter(isDone).length;
+  return { done, total: all.length, pct: Math.round(done / all.length * 100) };
+}
+function currentStep() { return stepsFor().find(s => !isDone(s)) || null; }
+function scrollToStep(id, smooth) {
+  const el = document.getElementById('step-' + id);
+  if (el) el.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
+}
+// Toggle a step, then glide to the next one if it is in the same section.
+function toggleStep(step) {
+  checked[step.id] = !checked[step.id];
+  render();
+  if (checked[step.id]) { const cur = currentStep(); if (cur && cur.section === activeSection) scrollToStep(cur.id, true); }
+}
+function resumeCurrent() { const cur = currentStep(); if (!cur) return; activeSection = cur.section; store('sabrina-tab', cur.section); render(); scrollToStep(cur.id, false); }
+function stepNum(id) { return stepsFor().filter(s => !s.isCounter).findIndex(s => s.id === id) + 1; }
+
+function goTo(key, storyId) {
+  activeSection = key; store('sabrina-tab', key);
+  if (storyId) openStory = storyId;
+  render(); window.scrollTo(0, 0);
 }
 
-function globalStepNum(id) {
-  const checkable = STEPS.filter(s => !s.isCounter);
-  return checkable.findIndex(s => s.id === id) + 1;
+// Keep the screen awake while counting circuits and laps.
+let wakeLock = null;
+async function keepAwake() {
+  try { if (!wakeLock && navigator.wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } } catch (e) {}
 }
-
-function goTo(key) { activeSection = key; saveTab(); render(); window.scrollTo(0,0); }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && (counters.tawaf || counters.saee)) keepAwake(); });
+function buzz() { try { navigator.vibrate && navigator.vibrate(25); } catch (e) {} }
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
-  renderTabs();
-  renderSectionHeading();
+  saveProgress();
+  document.documentElement.style.setProperty('--zoom', SIZES[textSize]);
+  document.querySelectorAll('#aa .lvl i').forEach((i, k) => i.classList.toggle('on', k <= textSize));
+  document.getElementById('aa').setAttribute('aria-label', 'Text size: ' + ['normal', 'large', 'extra large'][textSize] + '. Tap to change.');
+  document.querySelectorAll('#gender button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.g === gender)));
+  const { pct } = totalProgress();
+  document.getElementById('fill').style.width = pct + '%';
+  document.getElementById('pct').textContent = pct + '% done';
+  renderTabs(); renderHeading();
   if (activeSection === 'preread') renderPreread(); else renderSteps();
-  renderProgress();
+  renderResume();
 }
 
-function renderProgress() {
-  const { pct } = totalProgress();
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = pct + '% complete';
+// When you're on a different tab from where you left off, offer a one-tap way back.
+function renderResume() {
+  const cur = currentStep();
+  if (!cur || !hasProgress() || cur.section === activeSection) return;
+  const sec = SECTIONS.find(s => s.key === cur.section);
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'resume';
+  const label = cur.isCounter ? (cur.counterKey === 'tawaf' ? `Circuit ${counters.tawaf + 1} of 7` : `Lap ${counters.saee + 1} of 7`) : `Step ${stepNum(cur.id)}`;
+  b.innerHTML = `<span><small>Continue where you left off</small><b>${sec.label} · ${label}</b></span>${ICON.arrow}`;
+  b.onclick = resumeCurrent;
+  const c = document.getElementById('content');
+  c.insertBefore(b, c.firstChild);
 }
 
 function renderTabs() {
   const el = document.getElementById('tabs');
   el.innerHTML = '';
   SECTIONS.forEach(sec => {
-    const done = sectionDone(sec.key);
-    const btn = document.createElement('button');
-    btn.className = 'tab' + (sec.key === 'preread' ? ' pre' : '') + (sec.key === activeSection ? ' active' : '');
-    btn.innerHTML = `<span>${done ? '✅' : sec.emoji}</span><span>${sec.label}</span>`;
-    btn.onclick = () => goTo(sec.key);
-    el.appendChild(btn);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tab' + (sec.key === activeSection ? ' active' : '');
+    if (sec.key === activeSection) b.setAttribute('aria-current', 'page');
+    b.innerHTML = ICON[sec.key] + `<span>${sec.label}</span>` + (sectionDone(sec.key) ? '<i class="dot" aria-label="done"></i>' : '');
+    b.onclick = () => goTo(sec.key);
+    el.appendChild(b);
   });
 }
 
-function renderSectionHeading() {
+function renderHeading() {
   const sec = SECTIONS.find(s => s.key === activeSection);
-  document.getElementById('section-title').textContent = sec.emoji + '  ' + sec.label;
-  document.getElementById('section-sub').textContent = sec.sub;
+  const rites = SECTIONS.filter(s => s.key !== 'preread');
+  const idx = rites.findIndex(s => s.key === activeSection);
+  document.getElementById('eyebrow').textContent = activeSection === 'preread' ? 'Before you go' : `Part ${idx + 1} of ${rites.length}`;
+  document.getElementById('title').textContent = sec.key === 'completion' ? 'Finish' : sec.label;
+  document.getElementById('sub').textContent = sec.sub;
+  const pill = document.getElementById('count');
   if (activeSection === 'preread') {
     const n = STORIES.filter(s => readStories[s.id]).length;
-    document.getElementById('section-count').textContent = n + ' / ' + STORIES.length + ' read';
-    return;
+    pill.textContent = n + ' of ' + STORIES.length + ' read';
+    pill.className = 'pill' + (n === STORIES.length ? ' ok' : '');
+  } else {
+    const v = stepsFor(activeSection);
+    const d = v.filter(isDone).length;
+    pill.textContent = d + ' of ' + v.length + ' done';
+    pill.className = 'pill' + (d === v.length ? ' ok' : '');
   }
-  const visible = STEPS.filter(s => s.section === activeSection);
-  const doneCt = visible.filter(s => s.isCounter ? counters[s.counterKey] >= 7 : !!checked[step.id]).length;
-  document.getElementById('section-count').textContent = doneCt + ' / ' + visible.length + ' done';
 }
 
-function renderPreread() {
-  const c = document.getElementById('steps');
-  c.innerHTML = '';
-
-  const intro = document.createElement('p');
-  intro.className = 'pre-intro';
-  intro.textContent = "Read these before you fly. Each rite of Umrah retraces something that happened in these places, and knowing the story turns the steps into memories.";
-  c.appendChild(intro);
-
-  const g0 = document.createElement('p');
-  g0.className = 'group-label';
-  g0.textContent = 'Before you see the Ka\'bah';
-  c.appendChild(g0);
-
-  const k = document.createElement('details');
-  k.className = 'story kaaba';
-  k.id = 'story-kaaba';
-  if (openStory === 'kaaba') k.open = true;
-  k.innerHTML = `
-    <summary>
-      <span class="story-num">🕋</span>
-      <span class="story-head"><p class="story-title">${KAABA.title}</p><p class="story-meta">${KAABA.meta}</p></span>
-      <span class="story-chev">▸</span>
-    </summary>
-    <div class="story-body">${KAABA.body}</div>`;
-  k.addEventListener('toggle', () => { openStory = k.open ? 'kaaba' : (openStory === 'kaaba' ? null : openStory); });
-  c.appendChild(k);
-
-  const g1 = document.createElement('p');
-  g1.className = 'group-label';
-  g1.textContent = 'Focus stories';
-  c.appendChild(g1);
-
-  STORIES.forEach((s, i) => {
-    const d = document.createElement('details');
-    d.className = 'story' + (readStories[s.id] ? ' read' : '');
-    d.id = 'story-' + s.id;
-    if (openStory === s.id) d.open = true;
-    d.innerHTML = `
-      <summary>
-        <span class="story-num">${readStories[s.id] ? '✓' : i + 1}</span>
-        <span class="story-head"><p class="story-title">${s.title}</p><p class="story-meta">${s.meta}</p></span>
-        <span class="story-chev">▸</span>
-      </summary>
-      <div class="story-body">${s.body}</div>`;
-    d.addEventListener('toggle', () => { openStory = d.open ? s.id : (openStory === s.id ? null : openStory); });
-    const btn = document.createElement('button');
-    btn.className = 'mark-btn read-btn' + (readStories[s.id] ? ' done' : '');
-    btn.textContent = readStories[s.id] ? '✓ Read — tap to undo' : 'Mark as read';
-    btn.onclick = () => {
-      readStories[s.id] = !readStories[s.id]; saveRead();
-      openStory = readStories[s.id] ? null : s.id;
-      render();
-      const el = document.getElementById('story-' + s.id);
-      if (el) el.scrollIntoView({ block: 'start' });
-    };
-    d.querySelector('.story-body').appendChild(btn);
-    c.appendChild(d);
-  });
-
-  const g2 = document.createElement('p');
-  g2.className = 'group-label';
-  g2.textContent = 'More stories for the journey';
-  c.appendChild(g2);
-
-  MORE.forEach(m => {
-    const d = document.createElement('details');
-    d.className = 'story';
-    d.innerHTML = `
-      <summary>
-        <span class="story-head"><p class="story-title">${m.title}</p></span>
-        <span class="story-chev">▸</span>
-      </summary>
-      <div class="short"><p>${m.text}</p><p class="where">📍 ${m.where}</p></div>`;
-    c.appendChild(d);
-  });
-
-  const t = document.createElement('div');
-  t.className = 'takeaways';
-  t.innerHTML = `<h3>Carry these with you</h3><ul>${TAKEAWAYS.map(x => `<li>${x}</li>`).join('')}</ul>`;
-  c.appendChild(t);
-
-  const next = document.createElement('button');
-  next.className = 'next-btn ready';
-  next.textContent = 'Begin: 🌿 Ihram →';
-  next.onclick = () => goTo('ihram');
-  c.appendChild(next);
+function nextButton(container, label, ready, onclick) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'next' + (ready ? ' ready' : '');
+  b.innerHTML = `<span><small>${ready ? 'Next' : 'Skip to'}</small>${label}</span>${ICON.arrow}`;
+  b.onclick = onclick;
+  container.appendChild(b);
 }
 
 function renderSteps() {
-  const container = document.getElementById('steps');
-  container.innerHTML = '';
-  const visible = STEPS.filter(s => s.section === activeSection);
-  const sectionIdx = SECTIONS.findIndex(s => s.key === activeSection);
-  const prog = totalProgress();
-  const allDone = prog.done === prog.total;
+  const c = document.getElementById('content');
+  c.innerHTML = '';
+  const ol = document.createElement('ol');
+  ol.className = 'timeline';
+  const cur = currentStep();
+  const hasProgressOrStarted = hasProgress() || activeSection !== 'preread';
 
-  visible.forEach(step => {
-    const isDone = step.isCounter ? counters[step.counterKey] >= 7 : !!checked[step.id];
-    const div = document.createElement('div');
-    div.className = 'step' + (isDone ? ' done' : '');
+  stepsFor(activeSection).forEach(step => {
+    const done = isDone(step);
+    const li = document.createElement('li');
+    const isCur = cur && cur.id === step.id && hasProgressOrStarted;
+    li.className = 'step' + (done ? ' done' : '') + (isCur ? ' current' : '');
+    li.id = 'step-' + step.id;
 
-    const circle = document.createElement('div');
+    const node = document.createElement('button');
+    node.type = 'button';
     if (step.isCounter) {
-      circle.className = 'circle counter-circle' + (isDone ? ' counter-done' : '');
-      circle.textContent = isDone ? '✓' : '🔢';
+      node.className = 'node count';
+      node.innerHTML = done ? ICON.check : '7';
+      node.tabIndex = -1;
+      node.setAttribute('aria-hidden', 'true');
     } else {
-      const num = globalStepNum(step.id);
-      circle.className = 'circle' + (isDone ? ' checked' : '');
-      circle.textContent = isDone ? '✓' : num;
-      circle.onclick = () => { checked[step.id] = !checked[step.id]; render(); };
+      node.className = 'node';
+      node.innerHTML = done ? ICON.check : stepNum(step.id);
+      node.setAttribute('aria-label', done ? 'Mark step as not done' : 'Mark step as done');
+      node.onclick = () => toggleStep(step);
     }
-    div.appendChild(circle);
+    li.appendChild(node);
 
-    const content = document.createElement('div');
-    content.className = 'step-content';
-
+    const card = document.createElement('div');
+    card.className = 'card';
+    if (isCur) { const t = document.createElement('span'); t.className = 'now-tag'; t.textContent = 'You are here'; card.appendChild(t); }
     const p = document.createElement('p');
     p.className = 'step-text';
-    p.textContent = step.text;
-    content.appendChild(p);
+    p.textContent = g(step.text);
+    card.appendChild(p);
 
-    if (step.note) content.appendChild(makeNote(step.note));
-    if (step.notes) step.notes.forEach(n => content.appendChild(makeNote(n)));
-    if (step.dua) content.appendChild(makeDua(step.dua));
-    if (step.isCounter) content.appendChild(makeCounter(step));
-    if (step.detail) content.appendChild(makeLearnMore(step.detail));
+    if (step.note) card.appendChild(makeNote(g(step.note)));
+    if (step.notes) g(step.notes).forEach(n => card.appendChild(makeNote(n)));
+    if (step.dua) card.appendChild(makeDua(step.dua));
+    if (step.isCounter) card.appendChild(makeCounter(step));
+    if (step.detail) card.appendChild(makeMore(step.detail));
 
     if (!step.isCounter) {
-      const btn = document.createElement('button');
-      btn.className = 'mark-btn' + (isDone ? ' done' : '');
-      btn.textContent = isDone ? '✓ Done — tap to undo' : 'Mark as done';
-      btn.onclick = () => { checked[step.id] = !checked[step.id]; render(); };
-      content.appendChild(btn);
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn' + (done ? ' ghost' : '');
+      b.innerHTML = done ? `${ICON.check}<span>Done · tap to undo</span>` : `${ICON.check}<span>Mark as done</span>`;
+      b.onclick = () => toggleStep(step);
+      card.appendChild(b);
     }
-
-    div.appendChild(content);
-    container.appendChild(div);
+    li.appendChild(card);
+    ol.appendChild(li);
   });
+  c.appendChild(ol);
 
-  if (sectionIdx < SECTIONS.length - 1) {
-    const next = SECTIONS[sectionIdx + 1];
-    const btn = document.createElement('button');
-    const ready = sectionDone(activeSection);
-    btn.className = 'next-btn' + (ready ? ' ready' : '');
-    btn.textContent = (ready ? 'Next: ' : 'Skip to ') + next.emoji + ' ' + next.label + ' →';
-    btn.onclick = () => goTo(next.key);
-    container.appendChild(btn);
+  const i = SECTIONS.findIndex(s => s.key === activeSection);
+  if (i < SECTIONS.length - 1) {
+    const nx = SECTIONS[i + 1];
+    nextButton(c, nx.label, sectionDone(activeSection), () => goTo(nx.key));
   }
 
-  const card = document.createElement('div');
-  card.className = 'completion-card' + (allDone ? ' show' : '');
-  card.innerHTML = `
-    <p class="completion-arabic">تَقَبَّلَ اللّٰهُ مِنْكِ</p>
-    <p class="completion-roman">Taqabbalallāhu minki</p>
-    <p class="completion-msg">May Allah accept your Umrah. 🤍</p>
-  `;
-  container.appendChild(card);
+  const prog = totalProgress();
+  if (prog.done === prog.total) {
+    const card = document.createElement('div');
+    card.className = 'complete-card';
+    card.innerHTML = `
+      <p class="ar" lang="ar">${gender === 'm' ? 'تَقَبَّلَ اللّٰهُ مِنْكَ' : 'تَقَبَّلَ اللّٰهُ مِنْكِ'}</p>
+      <p class="rom">${gender === 'm' ? 'Taqabbalallāhu minka' : 'Taqabbalallāhu minki'}</p>
+      <p>May Allah accept your Umrah.</p>`;
+    c.appendChild(card);
+  }
+
+  const note = document.createElement('p');
+  note.className = 'saved';
+  note.textContent = saveOk ? 'Your progress is saved on this phone.' : 'This browser is blocking storage, so progress resets if the page reloads.';
+  c.appendChild(note);
+
+  if (activeSection === 'completion') {
+    const row = document.createElement('div');
+    row.className = 'reset-row';
+    row.innerHTML = `<p>Doing another Umrah? Clear every tick and counter and start again from Ihram.</p>`;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn danger';
+    b.textContent = 'Start a new Umrah';
+    b.onclick = () => {
+      if (!b.dataset.armed) { b.dataset.armed = '1'; b.textContent = 'Tap again to clear everything'; setTimeout(() => { if (b.isConnected) { delete b.dataset.armed; b.textContent = 'Start a new Umrah'; } }, 4000); return; }
+      checked = {}; counters = { tawaf: 0, saee: 0 }; goTo('ihram');
+    };
+    row.appendChild(b);
+    c.appendChild(row);
+  }
 }
 
 function makeNote(text) {
   const d = document.createElement('div');
   d.className = 'note';
-  d.innerHTML = `<span style="font-size:14px;flex-shrink:0">💡</span><p>${text}</p>`;
+  d.innerHTML = `${ICON.info}<p>${text}</p>`;
   return d;
 }
 
 function makeDua(dua) {
   const d = document.createElement('div');
   d.className = 'dua-box';
-  d.innerHTML = `
-    <p class="dua-arabic">${dua.arabic}</p>
-    <p class="dua-roman">${dua.roman}</p>
-    <p class="dua-meaning">${dua.meaning}</p>
-  `;
+  d.innerHTML = `<p class="dua-arabic" lang="ar">${dua.arabic}</p><p class="dua-roman">${dua.roman}</p><p class="dua-meaning">${dua.meaning}</p>`;
+  return d;
+}
+
+function makeMore(detail) {
+  const d = document.createElement('details');
+  d.className = 'more';
+  let body = '';
+  if (detail.history) body += `<p class="hist">${detail.history}</p>`;
+  const tips = g(detail.tips);
+  if (tips && tips.length) body += `<ul>${tips.map(t => `<li>${t}</li>`).join('')}</ul>`;
+  d.innerHTML = `<summary>${ICON.chevS}<span>Learn more</span></summary><div class="more-body">${body}</div>`;
+  d.addEventListener('toggle', () => { d.querySelector('summary span').textContent = d.open ? 'Hide details' : 'Learn more'; });
   return d;
 }
 
 function makeCounter(step) {
-  const key = step.counterKey;
-  const current = counters[key];
-  const total = 7;
-  const done = current >= total;
-  const label = key === 'tawaf' ? 'Circuits around the Ka\'bah' : 'Laps between Safa & Marwa';
-
+  const key = step.counterKey, n = counters[key], total = 7, done = n >= total;
+  const unit = key === 'tawaf' ? 'circuit' : 'lap';
+  const r = 52, C = 2 * Math.PI * r, gap = 15, seg = C / total - gap;
+  let rings = '';
+  for (let i = 0; i < total; i++) {
+    const off = -(i * C / total);
+    rings += `<circle cx="60" cy="60" r="${r}" fill="none" stroke-width="9" stroke-linecap="round" class="${i < n ? 'seg-on' : 'seg-bg'}" stroke-dasharray="${seg} ${C - seg}" stroke-dashoffset="${off}"/>`;
+  }
   const d = document.createElement('div');
-  d.className = 'counter' + (done ? ' done' : '');
-
-  const dots = Array.from({length: total}, (_,i) =>
-    `<div class="dot${i < current ? (done ? ' filled done' : ' filled') : ''}"></div>`
-  ).join('');
-
-  const btnLabel = done ? '✓ Complete!' : `Complete ${key === 'tawaf' ? 'circuit' : 'lap'} ${current + 1}`;
-
+  d.className = 'counter' + (done ? ' complete' : '');
   d.innerHTML = `
-    <p class="counter-label">${label}</p>
-    <p class="counter-number${done ? ' done' : ''}">${current}<span> / ${total}</span></p>
-    <div class="counter-dots">${dots}</div>
-    <div class="counter-btns">
-      <button class="btn-minus" ${current === 0 ? 'disabled' : ''}>−</button>
-      <button class="btn-add${done ? ' done' : ''}">${btnLabel}</button>
+    <div class="ring" role="img" aria-label="${n} of ${total} ${unit}s complete">
+      <svg viewBox="0 0 120 120">${rings}</svg>
+      <div class="ring-center"><b>${n}</b><span>of ${total} ${unit}s</span></div>
     </div>
-    ${done ? '<p class="counter-alhamdulillah">الحمد لله</p>' : ''}
-  `;
-
-  d.querySelector('.btn-minus').onclick = () => {
-    if (counters[key] > 0) { counters[key]--; render(); }
-  };
-  d.querySelector('.btn-add').onclick = () => {
-    if (counters[key] < 7) { counters[key]++; render(); }
-  };
-
+    <p class="counter-label">${key === 'tawaf' ? "Circuits around the Ka'bah" : 'Laps between Safa and Marwa'}</p>
+    <div class="counter-btns">
+      <button type="button" class="minus" aria-label="Undo last ${unit}" ${n === 0 ? 'disabled' : ''}>−</button>
+      <button type="button" class="add">${done ? 'Complete' : `Complete ${unit} ${n + 1}`}</button>
+    </div>
+    ${done ? '<p class="alh" lang="ar">الحمد لله</p>' : ''}`;
+  d.querySelector('.minus').onclick = () => { if (counters[key] > 0) { counters[key]--; render(); } };
+  d.querySelector('.add').onclick = () => { if (counters[key] < total) { counters[key]++; buzz(); keepAwake(); render(); if (counters[key] >= total) { const cur = currentStep(); if (cur && cur.section === activeSection) scrollToStep(cur.id, true); } } };
   return d;
 }
 
-function makeLearnMore(detail) {
-  const d = document.createElement('div');
-  d.className = 'learn-more';
-  const btn = document.createElement('button');
-  btn.className = 'learn-toggle';
-  btn.innerHTML = '<span style="font-size:16px">▸</span> Learn more';
-  const body = document.createElement('div');
-  body.className = 'learn-body';
-
-  if (detail.history) {
-    const p = document.createElement('p');
-    p.className = 'learn-history';
-    p.textContent = '📖 ' + detail.history;
-    body.appendChild(p);
-  }
-  if (detail.tips) {
-    detail.tips.forEach(t => {
-      const row = document.createElement('div');
-      row.className = 'learn-tip';
-      row.innerHTML = `<span class="learn-tip-dot">•</span><p>${t}</p>`;
-      body.appendChild(row);
-    });
-  }
-
-  btn.onclick = () => {
-    const isOpen = body.classList.toggle('open');
-    btn.innerHTML = `<span style="font-size:16px">${isOpen ? '▾' : '▸'}</span> ${isOpen ? 'Hide details' : 'Learn more'}`;
-  };
-
-  d.appendChild(btn);
-  d.appendChild(body);
+function storyCard(opts) {
+  const d = document.createElement('details');
+  d.className = 'story' + (opts.cls ? ' ' + opts.cls : '');
+  if (opts.id) d.id = 'story-' + opts.id;
+  if (opts.id && openStory === opts.id) d.open = true;
+  d.innerHTML = `
+    <summary>
+      <span class="badge">${opts.badge}</span>
+      <span><p class="s-title">${opts.title}</p>${opts.meta ? `<p class="s-meta">${opts.meta}</p>` : ''}</span>
+      ${ICON.chev}
+    </summary>
+    <div class="${opts.bodyCls || 'story-body'}">${opts.body}</div>`;
+  if (opts.id) d.addEventListener('toggle', () => { if (d.open) openStory = opts.id; else if (openStory === opts.id) openStory = null; });
   return d;
 }
 
-render();
+function renderPreread() {
+  const c = document.getElementById('content');
+  c.innerHTML = '';
+  const intro = document.createElement('p');
+  intro.className = 'intro';
+  intro.textContent = 'Read these before you fly. Each rite of Umrah retraces something that happened in these places, and knowing the story turns the steps into memories.';
+  c.appendChild(intro);
+
+  const label = t => { const p = document.createElement('p'); p.className = 'group'; p.textContent = t; c.appendChild(p); };
+  const list = () => { const l = document.createElement('div'); l.className = 'stories'; c.appendChild(l); return l; };
+
+  label("Before you see the Ka'bah");
+  list().appendChild(storyCard({ id:'kaaba', cls:'feature', badge:ICON.kaaba, title:KAABA.title, meta:KAABA.meta, body:KAABA.body }));
+
+  label('Focus stories');
+  const l2 = list();
+  STORIES.forEach((s, i) => {
+    const read = !!readStories[s.id];
+    const card = storyCard({ id:s.id, cls: read ? 'read' : '', badge: read ? ICON.check : i + 1, title:s.title, meta:s.meta, body:s.body });
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn' + (read ? ' ghost' : '');
+    b.innerHTML = `${ICON.check}<span>${read ? 'Read · tap to undo' : 'Mark as read'}</span>`;
+    b.onclick = () => {
+      readStories[s.id] = !readStories[s.id];
+      store('sabrina-preread', JSON.stringify(readStories));
+      openStory = readStories[s.id] ? null : s.id;
+      render();
+      const el = document.getElementById('story-' + s.id);
+      if (el) el.scrollIntoView({ block: 'center' });
+    };
+    card.querySelector('.story-body').appendChild(b);
+    l2.appendChild(card);
+  });
+
+  label('More stories for the journey');
+  const l3 = list();
+  MORE.forEach((m, i) => {
+    l3.appendChild(storyCard({ badge: ICON.preread, title:m.title, bodyCls:'short',
+      body:`<p>${m.text}</p><p class="where">${ICON.pin}<span>${g(m.where)}</span></p>` }));
+  });
+
+  const t = document.createElement('div');
+  t.className = 'carry';
+  t.innerHTML = `<h3>Carry these with you</h3><ul>${TAKEAWAYS.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  c.appendChild(t);
+
+  nextButton(c, 'Begin with Ihram', true, () => goTo('ihram'));
+}
+
+document.querySelectorAll('#gender button').forEach(b => {
+  b.onclick = () => { if (gender !== b.dataset.g) { gender = b.dataset.g; store('sabrina-gender', gender); render(); } };
+});
+document.getElementById('aa').onclick = () => { textSize = (textSize + 1) % SIZES.length; store('sabrina-size', String(textSize)); render(); };
+
+// On reopening mid-Umrah, land on the step you're up to.
+if (hasProgress() && currentStep()) { activeSection = currentStep().section; render(); scrollToStep(currentStep().id, false); }
+else render();
+
+// Offline cache when hosted on its own site (e.g. GitHub Pages). Skipped inside Claude.
+try {
+  if ('serviceWorker' in navigator && location.protocol === 'https:' && !/(^|\.)claude\.(ai|com)$|claudeusercontent|anthropic/.test(location.hostname)) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+} catch (e) {}
 </script>
 
 </body></html>
