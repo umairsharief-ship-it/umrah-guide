@@ -13,6 +13,7 @@
   --bg:#F2F4F1; --surface:#FFFFFF; --surface-2:#F7F8F6; --ink:#12201F; --muted:#5D6B69; --faint:#8C9997; --line:#E1E6E2;
   --accent:#0F5E59; --accent-ink:#FFFFFF; --accent-soft:#E2EFEC; --brass:#9A7428; --brass-soft:#F6EEDB; --brass-line:#E5D3A6;
   --ok:#2E7D52; --ok-soft:#E3F2E9; --header:#0D3F3C; --header-ink:#F1F7F5;
+  --pre-bg:#F5EEDF; --pre-accent:#8A6A1F; --pre-accent-ink:#FFFFFF; --pre-accent-soft:#EEE1C3;
   --shadow:0 1px 2px rgba(18,32,31,.05), 0 4px 16px rgba(18,32,31,.06);
   --ui:"Plus Jakarta Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
   --ar:"Amiri", "Noto Naskh Arabic", "Geeza Pro", serif;
@@ -22,11 +23,13 @@
   --bg:#0A1211; --surface:#121C1B; --surface-2:#172322; --ink:#E6EEEC; --muted:#95A5A2; --faint:#6E7F7C; --line:#22302E;
   --accent:#5CC2B4; --accent-ink:#06201D; --accent-soft:#143330; --brass:#D9B66C; --brass-soft:#272114; --brass-line:#4A3D20;
   --ok:#62CC93; --ok-soft:#14301F; --header:#0A1C1B; --header-ink:#E6EEEC;
+  --pre-bg:#14100A; --pre-accent:#D9B66C; --pre-accent-ink:#1E1606; --pre-accent-soft:#2D2414;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.25); color-scheme:dark } }
 :root[data-theme="dark"]{
   --bg:#0A1211; --surface:#121C1B; --surface-2:#172322; --ink:#E6EEEC; --muted:#95A5A2; --faint:#6E7F7C; --line:#22302E;
   --accent:#5CC2B4; --accent-ink:#06201D; --accent-soft:#143330; --brass:#D9B66C; --brass-soft:#272114; --brass-line:#4A3D20;
   --ok:#62CC93; --ok-soft:#14301F; --header:#0A1C1B; --header-ink:#E6EEEC;
+  --pre-bg:#14100A; --pre-accent:#D9B66C; --pre-accent-ink:#1E1606; --pre-accent-soft:#2D2414;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.25); color-scheme:dark }
 
 *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -52,7 +55,7 @@ button{ font:inherit; color:inherit; }
 .brand .ar{ font-family:var(--ar); font-size:20px; opacity:.75; line-height:1; }
 .brand small{ display:block; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.6; font-weight:600; margin-top:2px; }
 .tools{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
-.aa{ height:34px; min-width:40px; border:0; border-radius:999px; background:rgba(255,255,255,.1); color:inherit; cursor:display:flex; align-items:baseline; justify-content:center; gap:1px; padding:0 10px; font-weight:800; line-height:34px; }
+.aa{ height:34px; min-width:40px; border:0; border-radius:999px; background:rgba(255,255,255,.1); color:inherit; cursor:pointer; display:flex; align-items:baseline; justify-content:center; gap:1px; padding:0 10px; font-weight:800; line-height:34px; }
 .aa.icon{ width:34px; min-width:34px; padding:0; align-items:center; }
 .aa.icon svg{ width:17px; height:17px; }
 .aa .s1{ font-size:11px; } .aa .s2{ font-size:15px; }
@@ -202,14 +205,45 @@ details.more[open] summary svg{ transform:rotate(90deg); }
 .carry ul{ margin:0; padding-left:18px; display:grid; gap:6px; }
 .carry li{ font-size:14px; line-height:1.6; opacity:.92; }
 
-/* Bottom tab bar */
-.tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:30; background:color-mix(in srgb, var(--surface) 88%, transparent); -webkit-backdrop-filter:saturate(1.6) blur(16px); backdrop-filter:saturate(1.6) blur(16px); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); }
-.tabbar .wrap{ display:grid; grid-template-columns:repeat(5,1fr); }
-.tab{ border:0; background:none; cursor:pointer; padding:9px 2px 10px; display:grid; justify-items:center; gap:3px; color:var(--faint); font-size:11px; font-weight:600; position:relative; }
-.tab svg{ width:22px; height:22px; }
-.tab.active{ color:var(--accent); }
-.tab.active::before{ content:""; position:absolute; top:0; left:30%; right:30%; height:2.5px; border-radius:0 0 3px 3px; background:var(--accent); }
-.tab .dot{ position:absolute; top:7px; right:calc(50% - 17px); width:8px; height:8px; border-radius:50%; background:var(--ok); border:2px solid var(--surface); }
+/* Bottom tab bar: a numbered 0–4 sequence joined by a line */
+.tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:30; background:color-mix(in srgb, var(--surface) 90%, transparent); -webkit-backdrop-filter:saturate(1.6) blur(16px); backdrop-filter:saturate(1.6) blur(16px); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); }
+.tabbar .wrap{ display:grid; grid-template-columns:repeat(5,1fr); position:relative; }
+.tabbar .wrap::before{ content:""; position:absolute; top:23px; left:calc(10% + 16px); right:calc(10% + 16px); height:2px; background:var(--line); }
+.tab{ border:0; background:none; cursor:pointer; padding:10px 2px 9px; display:grid; justify-items:center; gap:4px; color:var(--faint); font-size:11px; font-weight:600; position:relative; }
+.tab .num{ width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-size:12.5px; font-weight:800; border:2px solid var(--line); background:var(--surface); color:var(--muted); font-variant-numeric:tabular-nums; transition:all .2s; position:relative; z-index:1; }
+.tab.pre .num{ border-color:var(--pre-accent); color:var(--pre-accent); }
+.tab.done .num{ background:var(--ok); border-color:var(--ok); color:#fff; }
+.tab.active{ color:var(--ink); font-weight:800; }
+.tab.active .num{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); box-shadow:0 0 0 4px var(--accent-soft); }
+.tab.pre.active .num{ background:var(--pre-accent); border-color:var(--pre-accent); color:var(--pre-accent-ink); box-shadow:0 0 0 4px var(--pre-accent-soft); }
+
+/* Pre-read has its own warm palette */
+body.pre{ --bg:var(--pre-bg); --accent:var(--pre-accent); --accent-ink:var(--pre-accent-ink); --accent-soft:var(--pre-accent-soft); }
+body{ transition:background-color .25s; }
+
+/* Info cards (not counted as steps) */
+.step.info .node{ border-color:var(--brass-line); background:var(--brass-soft); color:var(--brass); cursor:default; }
+.step.info .card{ border-color:var(--brass-line); }
+.info-title{ margin:0; font-size:calc(17px * var(--zoom,1)); font-weight:800; letter-spacing:-.01em; }
+.info-tag{ justify-self:start; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:800; color:var(--brass); background:var(--brass-soft); padding:3px 9px; border-radius:99px; }
+
+/* Counter undo + toast */
+.undo-link{ border:0; background:none; color:var(--muted); font-size:13px; font-weight:600; text-decoration:underline; text-underline-offset:3px; padding:10px 12px; cursor:pointer; }
+.add:disabled{ opacity:.85; cursor:default; }
+.toast{ position:fixed; left:0; right:0; margin:0 auto; bottom:calc(86px + env(safe-area-inset-bottom,0px)); z-index:45; display:flex; align-items:center; gap:14px; background:var(--ink); color:var(--bg); border-radius:14px; padding:12px 12px 12px 16px; font-size:14px; font-weight:600; box-shadow:0 8px 24px rgba(0,0,0,.25); width:max-content; max-width:calc(100% - 32px); }
+.toast span{ white-space:nowrap; }
+.toast button{ border:0; background:none; color:#EFD08A; font-weight:800; font-size:14px; padding:4px 8px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+:root[data-theme="dark"] .toast button{ color:#0F5E59; }
+
+/* First-launch choice */
+.welcome{ position:fixed; inset:0; z-index:60; background:rgba(5,15,14,.55); display:grid; align-items:end; justify-items:center; padding:16px; padding-bottom:calc(16px + env(safe-area-inset-bottom,0px)); }
+.welcome .sheet{ width:100%; max-width:440px; background:var(--surface); color:var(--ink); border-radius:22px; padding:26px 20px 20px; display:grid; gap:10px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.35); }
+.welcome .ar{ font-family:var(--ar); font-size:30px; color:var(--brass); margin:0; line-height:1.4; }
+.welcome h2{ margin:0; font-size:22px; font-weight:800; letter-spacing:-.02em; }
+.welcome p{ margin:0; color:var(--muted); font-size:14.5px; line-height:1.55; }
+.welcome .choices{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+.welcome .choices button{ height:60px; border-radius:14px; border:1.5px solid var(--line); background:var(--surface-2); color:var(--ink); font-size:16px; font-weight:800; cursor:pointer; }
+.welcome .choices button:hover{ border-color:var(--accent); }
 
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 </style>
@@ -475,7 +509,7 @@ const KAABA = { title:'Looking at the Ka\'bah', meta:'The reward, what it means,
     </ul></div>` };
 
 const MORE = [
-  { title:'The Black Stone', text:"The <strong>Black Stone</strong> (al-Hajar al-Aswad) is set into the eastern corner of the Ka'bah, about chest height. Every circuit of tawaf begins and ends at it.</p><p><strong>Where it comes from:</strong> the Prophet ﷺ said: <em>The Black Stone came down from Paradise. It was whiter than milk, and the sins of the children of Adam turned it black</em> <span class=\"src\">(Tirmidhi 877, graded hasan sahih)</span>. Early scholars reported that the angel Jibril brought it to Ibrahim while he was building the Ka'bah, and that Ibrahim set it in the corner to mark where circling the House begins.</p><p><strong>How the Prophet ﷺ set it in place:</strong> around 605 CE, when he was about 35, a flood damaged the Ka'bah and the Quraysh rebuilt it. When the walls were high enough, the clans nearly came to blows over who would have the honor of putting the Black Stone back. They agreed the next man to walk in would decide, and it was Muhammad. Everyone was relieved: <em>It's al-Amin.</em> He spread his cloak on the ground, placed the Stone in the middle, had one leader from each clan lift a corner, and then set the Stone in the wall with his own hands. Everyone shared the honor and no blood was shed.</p><p><strong>What you'll see today:</strong> the Stone was broken into pieces over the centuries. Most notoriously, a rebel group called the Qaramitah carried it off in 930 CE and kept it for about 22 years. The pieces are now held together in a silver frame: you'll see a silver casing with dark stone visible through an opening in the middle.</p><p><strong>Why we touch or point to it:</strong> the Prophet ﷺ kissed it, and said it will come on the Day of Judgment with eyes to see and a tongue to speak, testifying for everyone who touched it sincerely <span class=\"src\">(Tirmidhi 961)</span>. It is not worshipped. Umar (RA) kissed it and said: <em>I know you are only a stone that can neither harm nor benefit. Had I not seen the Messenger of Allah kiss you, I would not kiss you</em> <span class=\"src\">(Sahih al-Bukhari)</span>. Every ritual is about following the Prophet ﷺ and obeying Allah, not the objects themselves.", where:"At the eastern corner of the Ka'bah, marked by a green light on the wall opposite. If the crowd is heavy, pointing from a distance carries the full sunnah." },
+  { title:'The Black Stone', text:"The <strong>Black Stone</strong> (al-Hajar al-Aswad) is set into the eastern corner of the Ka'bah, about chest height. Every circuit of tawaf begins and ends at it.</p><p><strong>Where it comes from:</strong> the Prophet ﷺ said: <em>The Black Stone came down from Paradise. It was whiter than milk, and the sins of the children of Adam turned it black</em> <span class=\"src\">(Tirmidhi 877, graded hasan sahih)</span>. Early scholars reported that the angel Jibril brought it to Ibrahim while he was building the Ka'bah, and that Ibrahim set it in the corner to mark where circling the House begins.</p><p><strong>How the Prophet ﷺ set it in place:</strong> around 605 CE, when he was about 35, a flood damaged the Ka'bah and the Quraysh rebuilt it. When the walls were high enough, the clans nearly came to blows over who would have the honor of putting the Black Stone back. They agreed the next man to walk in would decide, and it was Muhammad. Everyone was relieved: <em>It's al-Amin.</em> He spread his cloak on the ground, placed the Stone in the middle, had one leader from each clan lift a corner, and then set the Stone in the wall with his own hands. Everyone shared the honor and no blood was shed.</p><p><strong>What you'll see today:</strong> the Stone was broken into pieces over the centuries. Most notoriously, a rebel group called the Qaramitah carried it off in 930 CE and kept it for about 22 years. The pieces are now held together in a silver frame: you'll see a silver casing with dark stone visible through an opening in the middle.</p><p><strong>Why we touch or point to it:</strong> the Prophet ﷺ kissed it, and said it will come on the Day of Judgment with eyes to see and a tongue to speak, testifying for everyone who touched it sincerely <span class=\"src\">(Tirmidhi 961)</span>. It is not worshipped. Umar (RA) kissed it and said: <em>I know you are only a stone that can neither harm nor benefit. Had I not seen the Messenger of Allah kiss you, I would not kiss you</em> <span class=\"src\">(Sahih al-Bukhari)</span>. Every ritual is about following the Prophet ﷺ and obeying Allah, not the objects themselves.", where:"At the eastern corner of the Ka'bah, marked by a green light on the wall opposite. If the crowd is heavy, greeting it from a distance by pointing is enough." },
   { title:'The Year of the Elephant', text:"Abraha, the Abyssinian governor of Yemen, marched on Makkah with an elephant to destroy the Kaaba. Abdul-Muttalib asked him only for his camels back: he owned the camels, and the House had its own Lord to protect it. Flocks of birds pelted the army with stones of baked clay (Surah al-Fil). The Prophet ﷺ was born that same year.", where:'Recite Surah al-Fil while looking at the Kaaba.' },
   { title:'Hudaybiyyah and the origin of ramal', text:"In 6 AH the Prophet ﷺ set out with about 1,400 companions to perform umrah and was blocked at Hudaybiyyah. The treaty seemed humiliating, but the Qur'an called it a clear victory (Surah al-Fath). The next year they returned for 'Umrat al-Qada. The Quraysh had said Madinah's fever had weakened them, so the men bared their right shoulders (idtiba') and walked briskly (ramal) in the first three circuits to show strength. The Prophet ﷺ performed four umrahs in his lifetime.", where:{ f:"You'll see the men around you doing this in tawaf. Women walk normally.", m:"You'll do both yourself in the tawaf of your Umrah." } },
   { title:'The Conquest of Makkah', text:"In 8 AH the man who had been driven out of Makkah returned with 10,000 companions, head bowed so low it nearly touched his saddle. He circled the Kaaba and knocked down its 360 idols, reciting \"Truth has come and falsehood has vanished\" (17:81). He told the Quraysh who had persecuted him that they were free to go. Bilal, once tortured on Makkah's sands, climbed the Kaaba and gave the adhan. The Prophet ﷺ returned the Kaaba's key to Uthman ibn Talha's family, the Banu Shaybah, who still hold it today.", where:'Every adhan you hear in the Haram echoes that first one from the Kaaba.' },
@@ -504,7 +538,7 @@ const STEPS = [
   },
   { id:'i2', section:'ihram', only:'f',
     text:"Dress modestly. Your regular abaya and hijab are your Ihram — no special garment for women.",
-    note:'Cover everything except your face and hands. In the Hanafi school, socks and gloves are allowed. Do not let any cloth touch your face while in Ihram.',
+    note:'Cover everything except your face and hands. In the Hanafi school, socks and gloves are allowed, though avoiding gloves is more cautious. Do not let any cloth touch your face while in Ihram.',
     detail:{ tips:['Do not cut or trim hair or nails while in Ihram.','Do not apply perfume or scented products, including scented soap, lotion or wipes.','Your face must not be covered by anything that touches it. To screen your face from men, Hanafi scholars recommend something held away from the skin, such as a visor-style cap under the hijab with a cloth hanging over the brim.','Stitched clothing, shoes, socks and gloves are all fine for women.','Avoid intimacy with your husband.','All restrictions lift once you trim your hair at the end.'] }
   },
   { id:'i2m', section:'ihram', only:'m',
@@ -531,13 +565,14 @@ const STEPS = [
   },
   { id:'t1', section:'tawaf',
     text:'Make sure you have wudu. Enter Masjid Al-Haram with your right foot and say:',
-    note:'In the Hanafi school, wudu is wajib for Tawaf. A Tawaf done without it carries a penalty unless it is repeated with wudu.',
+    note:'In the Hanafi school, wudu is wajib for Tawaf. A Tawaf done without it carries a penalty unless it is repeated with wudu. Accidental contact with men in the crowd does not break wudu in your school.',
+    notes:['Keep your hair and arms covered throughout Tawaf. Covering is required, and wind or the crowd can loosen a hijab.'],
     dua:{ arabic:'اللّٰهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ', roman:'Allāhummaf-taḥ lī abwāba raḥmatik', meaning:'O Allah, open for me the gates of Your mercy.' }
   },
   { id:'t2', section:'tawaf',
     text:"When the Ka'bah comes into view for the first time — stop. Raise your hands and make dua. This is one of the most powerful moments of the entire Umrah.",
-    note:{ f:"No fixed dua here. Scholars say dua is accepted at first sight of the Ka'bah. Speak freely — for yourself, your husband, your children, your parents. Take your time.",
-           m:"No fixed dua here. Scholars say dua is accepted at first sight of the Ka'bah. Speak freely — for yourself, your wife, your children, your parents. Take your time." },
+    note:{ f:"No fixed dua here. Many scholars encouraged du'a at the first sight of the Ka'bah. Speak freely — for yourself, your husband, your children, your parents. Take your time.",
+           m:"No fixed dua here. Many scholars encouraged du'a at the first sight of the Ka'bah. Speak freely — for yourself, your wife, your children, your parents. Take your time." },
     detail:{ history:"This is the House of Allah — the direction every Muslim on earth faces five times a day. Seeing it for the first time is a gift very few people receive. Before anything else, ask.", tips:['Above it, in the seventh heaven, 70,000 angels a day worship at al-Bayt al-Ma\'mur. Your tawaf mirrors theirs.','Don\'t reach for your phone first. Make the du\'a, then take a photo if you like.','See "Looking at the Ka\'bah" at the top of the Pre-read tab for more to reflect on.'] }
   },
   { id:'t2m', section:'tawaf', only:'m',
@@ -553,7 +588,7 @@ const STEPS = [
   { id:'t4', section:'tawaf',
     text:'Stop reciting the Talbiyah now. Face the Black Stone and raise both hands to your ears, palms facing it, as in the opening takbir of prayer, and say the dua. Then lower your hands, point both palms toward the Stone, and kiss your palms. This begins circuit 1.',
     dua:{ arabic:'بِسْمِ اللّٰهِ، اللّٰهُ أَكْبَرُ، وَلِلّٰهِ الْحَمْدُ', roman:'Bismillāhi Allāhu Akbar, wa lillāhil-ḥamd', meaning:'In the name of Allah, Allah is the Greatest, and all praise is for Allah.' },
-    note:'Kiss or touch the Black Stone only if you can reach it without pushing. If crowded, pointing from where you stand is perfectly valid.'
+    note:'Touch or kiss the Black Stone only when it isn\'t crowded with men. Otherwise pointing from where you stand is enough.'
   },
   { id:'t5', section:'tawaf', isCounter:true, counterKey:'tawaf',
     text:{
@@ -562,8 +597,8 @@ const STEPS = [
     dua:{ arabic:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', roman:'Rabbanā ātinā fid-dunyā ḥasanatan wa fil-ākhirati ḥasanatan wa qinā \'adhāban-nār', meaning:'Our Lord, give us good in this world, good in the Hereafter, and protect us from the Fire.' },
     note:'For the rest of each circuit, no fixed dua — speak to Allah freely in any language. If you lose count, take the lower number you are sure of.',
     detail:{ tips:{
-      f:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot.','Women walk at a normal pace in every circuit and keep the shoulders covered.','Stay calm and move with the flow of people.'],
-      m:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','Raml is sunnah, not required. If the crowd is too dense to do it without pushing, walk normally. Moving further out from the Ka\'bah can give you room.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot. Cover your shoulder for the prayer.','Stay calm and move with the flow of people.'] } }
+      f:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','Face the Black Stone only while standing still at its line. Turn so the Ka\'bah is on your left before you walk on: don\'t walk while facing it.','Keep your hands off the Ka\'bah\'s walls and its marble base while walking. Your whole body must stay outside the House.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot.','Women walk at a normal pace in every circuit and keep the shoulders covered.','Stay calm and move with the flow of people.'],
+      m:['The Yemeni Corner is the 4th and final corner before the Black Stone.','A green light on the wall marks the Black Stone line.','Go around the outside of the Hijr Ismail (the low semicircular wall). It is part of the Ka\'bah.','Face the Black Stone only while standing still at its line. Turn so the Ka\'bah is on your left before you walk on: don\'t walk while facing it.','Keep your hands off the Ka\'bah\'s walls and its marble base while walking. Your whole body must stay outside the House.','In the Hanafi school, the first 4 circuits are the pillar of Tawaf and the last 3 are wajib. Complete all 7.','Raml is sunnah, not required. If the crowd is too dense to do it without pushing, walk normally. Moving further out from the Ka\'bah can give you room.','After the 7th circuit, face the Black Stone and point your palms toward it once more before leaving the mataf.','If your wudu breaks mid-Tawaf: leave, renew wudu, return and continue from where you left off — you do not restart from circuit 1.','If the congregational prayer starts, join it, then continue from the same spot. Cover your shoulder for the prayer.','Stay calm and move with the flow of people.'] } }
   },
   { id:'t6', section:'tawaf',
     text:'After all 7 circuits, pray 2 rak\'ahs near Maqam Ibrahim. If you cannot get close, anywhere in the Masjid is fine. In the Hanafi school these 2 rak\'ahs are wajib.',
@@ -668,18 +703,21 @@ function hasProgress() { return Object.values(checked).some(Boolean) || counters
 // Pick the gender-specific value of a field, if it has one.
 function g(v) { return (v && typeof v === 'object' && !Array.isArray(v) && ('m' in v || 'f' in v)) ? v[gender] : v; }
 function stepsFor(sec) { return STEPS.filter(s => (!sec || s.section === sec) && (!s.only || s.only === gender)); }
+function steps(sec) { return stepsFor(sec).filter(s => !s.isInfo); }
 function isDone(s) { return s.isCounter ? counters[s.counterKey] >= 7 : !!checked[s.id]; }
 
 function sectionDone(key) {
   if (key === 'preread') return STORIES.every(s => readStories[s.id]);
-  return stepsFor(key).every(isDone);
+  return steps(key).every(isDone);
 }
 function totalProgress() {
-  const all = stepsFor().filter(s => s.section !== 'preread');
+  const all = steps();
   const done = all.filter(isDone).length;
-  return { done, total: all.length, pct: Math.round(done / all.length * 100) };
+  // Counters move the bar circuit by circuit, not only when all 7 are done.
+  const partial = all.filter(s => s.isCounter && !isDone(s)).reduce((a, s) => a + counters[s.counterKey] / 7, 0);
+  return { done, total: all.length, pct: Math.round((done + partial) / all.length * 100) };
 }
-function currentStep() { return stepsFor().find(s => !isDone(s)) || null; }
+function currentStep() { return steps().find(s => !isDone(s)) || null; }
 function scrollToStep(id, smooth) {
   const el = document.getElementById('step-' + id);
   if (el) el.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
@@ -691,7 +729,7 @@ function toggleStep(step) {
   if (checked[step.id]) { const cur = currentStep(); if (cur && cur.section === activeSection) scrollToStep(cur.id, true); }
 }
 function resumeCurrent() { const cur = currentStep(); if (!cur) return; activeSection = cur.section; store('sabrina-tab', cur.section); render(); scrollToStep(cur.id, false); }
-function stepNum(id) { return stepsFor().filter(s => !s.isCounter).findIndex(s => s.id === id) + 1; }
+function stepNum(id) { return steps().filter(s => !s.isCounter).findIndex(s => s.id === id) + 1; }
 
 function goTo(key, storyId) {
   activeSection = key; store('sabrina-tab', key);
@@ -710,6 +748,7 @@ function buzz() { try { navigator.vibrate && navigator.vibrate(25); } catch (e) 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
   saveProgress();
+  document.body.classList.toggle('pre', activeSection === 'preread');
   document.documentElement.setAttribute('data-theme', theme);
   const tb = document.getElementById('theme');
   tb.innerHTML = theme === 'dark'
@@ -747,12 +786,14 @@ function renderResume() {
 function renderTabs() {
   const el = document.getElementById('tabs');
   el.innerHTML = '';
-  SECTIONS.forEach(sec => {
+  SECTIONS.forEach((sec, i) => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'tab' + (sec.key === activeSection ? ' active' : '');
+    const done = sectionDone(sec.key);
+    b.className = 'tab' + (sec.key === 'preread' ? ' pre' : '') + (done ? ' done' : '') + (sec.key === activeSection ? ' active' : '');
     if (sec.key === activeSection) b.setAttribute('aria-current', 'page');
-    b.innerHTML = ICON[sec.key] + `<span>${sec.label}</span>` + (sectionDone(sec.key) ? '<i class="dot" aria-label="done"></i>' : '');
+    b.setAttribute('aria-label', `${i}. ${sec.label}${done ? ', done' : ''}`);
+    b.innerHTML = `<span class="num" aria-hidden="true">${i}</span><span>${sec.label}</span>`;
     b.onclick = () => goTo(sec.key);
     el.appendChild(b);
   });
@@ -762,7 +803,7 @@ function renderHeading() {
   const sec = SECTIONS.find(s => s.key === activeSection);
   const rites = SECTIONS.filter(s => s.key !== 'preread');
   const idx = rites.findIndex(s => s.key === activeSection);
-  document.getElementById('eyebrow').textContent = activeSection === 'preread' ? 'Before you go' : `Part ${idx + 1} of ${rites.length}`;
+  document.getElementById('eyebrow').textContent = activeSection === 'preread' ? 'Part 0 · Before you go' : `Part ${idx + 1} of ${rites.length}`;
   document.getElementById('title').textContent = sec.key === 'completion' ? 'Finish' : sec.label;
   document.getElementById('sub').textContent = sec.sub;
   const pill = document.getElementById('count');
@@ -771,7 +812,7 @@ function renderHeading() {
     pill.textContent = n + ' of ' + STORIES.length + ' read';
     pill.className = 'pill' + (n === STORIES.length ? ' ok' : '');
   } else {
-    const v = stepsFor(activeSection);
+    const v = steps(activeSection);
     const d = v.filter(isDone).length;
     pill.textContent = d + ' of ' + v.length + ' done';
     pill.className = 'pill' + (d === v.length ? ' ok' : '');
@@ -798,9 +839,21 @@ function renderSteps() {
   stepsFor(activeSection).forEach(step => {
     const done = isDone(step);
     const li = document.createElement('li');
+    li.id = 'step-' + step.id;
+    if (step.isInfo) {
+      li.className = 'step info';
+      li.innerHTML = `<span class="node" aria-hidden="true">${ICON.info}</span>`;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<span class="info-tag">Good to know</span><p class="info-title">${step.title}</p><p class="step-text">${g(step.text)}</p>`;
+      if (step.notes) g(step.notes).forEach(n => card.appendChild(makeNote(n)));
+      if (step.detail) card.appendChild(makeMore(step.detail));
+      li.appendChild(card);
+      ol.appendChild(li);
+      return;
+    }
     const isCur = cur && cur.id === step.id && hasProgressOrStarted;
     li.className = 'step' + (done ? ' done' : '') + (isCur ? ' current' : '');
-    li.id = 'step-' + step.id;
 
     const node = document.createElement('button');
     node.type = 'button';
@@ -909,6 +962,20 @@ function makeMore(detail) {
   return d;
 }
 
+// Brief confirmation with an Undo, shown after each counted circuit or lap.
+let toastTimer = null;
+function showToast(text, undo) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+  t.innerHTML = `<span>${text}</span>`;
+  if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { undo(); hideToast(); }; t.appendChild(b); }
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, 4000);
+}
+function hideToast() { const t = document.getElementById('toast'); if (t) t.hidden = true; }
+
+let countLockUntil = 0;
 function makeCounter(step) {
   const key = step.counterKey, n = counters[key], total = 7, done = n >= total;
   const unit = key === 'tawaf' ? 'circuit' : 'lap';
@@ -927,12 +994,27 @@ function makeCounter(step) {
     </div>
     <p class="counter-label">${key === 'tawaf' ? "Circuits around the Ka'bah" : 'Laps between Safa and Marwa'}</p>
     <div class="counter-btns">
-      <button type="button" class="minus" aria-label="Undo last ${unit}" ${n === 0 ? 'disabled' : ''}>−</button>
       <button type="button" class="add">${done ? 'Complete' : `Complete ${unit} ${n + 1}`}</button>
     </div>
-    ${done ? '<p class="alh" lang="ar">الحمد لله</p>' : ''}`;
-  d.querySelector('.minus').onclick = () => { if (counters[key] > 0) { counters[key]--; render(); } };
-  d.querySelector('.add').onclick = () => { if (counters[key] < total) { counters[key]++; buzz(); keepAwake(); render(); if (counters[key] >= total) { const cur = currentStep(); if (cur && cur.section === activeSection) scrollToStep(cur.id, true); } } };
+    ${done ? '<p class="alh" lang="ar">الحمد لله</p>' : ''}
+    ${n > 0 ? `<button type="button" class="undo-link">Undo last ${unit}</button>` : ''}`;
+  const add = d.querySelector('.add');
+  // Ignore a second tap within 2 seconds, so a bump in the crowd can't count twice.
+  const wait = countLockUntil - Date.now();
+  if (wait > 0 && !done) {
+    add.disabled = true; add.textContent = `${unit[0].toUpperCase() + unit.slice(1)} ${n} counted`;
+    setTimeout(() => { if (add.isConnected) { add.disabled = false; add.textContent = `Complete ${unit} ${counters[key] + 1}`; } }, wait);
+  }
+  const undoOne = () => { if (counters[key] > 0) { counters[key]--; countLockUntil = 0; render(); } };
+  const u = d.querySelector('.undo-link');
+  if (u) u.onclick = undoOne;
+  add.onclick = () => {
+    if (counters[key] >= total || Date.now() < countLockUntil) return;
+    counters[key]++; countLockUntil = Date.now() + 2000;
+    buzz(); keepAwake(); render();
+    showToast(`Counted ${unit} ${counters[key]} of 7`, undoOne);
+    if (counters[key] >= total) { const cur = currentStep(); if (cur && cur.section === activeSection) scrollToStep(cur.id, true); }
+  };
   return d;
 }
 
